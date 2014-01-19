@@ -89,34 +89,37 @@ function Slider (slider, id) {
     if (this.transition == "fade") {
         this.self.children().css("transition", "opacity "+this.time_interval/4000+"s");
         this.self.children().css("-webkit-transition", "opacity "+this.time_interval/4000+"s");
+        this.self.children().css("top", "0px");
+        this.self.children().css("left", "0px");
     }
     else if (this.transition == "slide-right") {
         this.children[0].css("left", "0px");
         this.self.children().css("transition", "left "+this.time_interval/4000+"s");
         this.self.children().css("-webkit-transition", "left "+this.time_interval/4000+"s");
         this.children[1].css("left", -this.self.width()+"px");
+        this.self.children().css("top", "0px");
     }
     else if (this.transition == "slide-left") {
         this.children[0].css("left", "0px");
         this.self.children().css("transition", "left "+this.time_interval/4000+"s");
         this.self.children().css("-webkit-transition", "left "+this.time_interval/4000+"s");
         this.children[1].css("left", this.self.width()+"px");
+        this.self.children().css("top", "0px");
     }
     else if (this.transition == "slide-down") {
         this.children[0].css("top", "0px");
         this.self.children().css("transition", "top "+this.time_interval/4000+"s");
         this.self.children().css("-webkit-transition", "top "+this.time_interval/4000+"s");
         this.children[1].css("top", -this.self.height()+"px");
+        this.self.children().css("left", "0px");
     }
     else if (this.transition == "slide-up") {
         this.children[0].css("top", "0px");
         this.self.children().css("transition", "top "+this.time_interval/4000+"s");
         this.self.children().css("-webkit-transition", "top "+this.time_interval/4000+"s");
         this.children[1].css("top", this.self.height()+"px");
+        this.self.children().css("left", "0px");
     }
-    this.children[0].css("top", "0px");
-    this.children[0].css("left", "0px");
-
 };
 
 Slider.prototype.next = function() {
