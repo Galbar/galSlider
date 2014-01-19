@@ -2,7 +2,7 @@ GalSlider
 =========
 Adding it to your web page
 -------------------------
-It requires jquery 1.10.2 or later. (http://www.jquery.com)
+It requires jquery 1.10.2 or later. (http://www.jquery.com)  
 In the head element add the following lines:
 ```
 <link rel="stylesheet" type="text/css" href="galSlider/style.css">
@@ -11,7 +11,7 @@ In the head element add the following lines:
 
 Creating the slider element
 ---------------------------
-Add a div element with class "galSlider". Add any html elements into it with the class "galSlider-content".
+Add a div element with class "galSlider". Add any html elements into it with the class "galSlider-content".  
 You are done.
 
 If you want it to have the corners rounded, add "galSlider-rounded" to its classes.
@@ -31,12 +31,12 @@ The height of the slider. Defaults to "200" in pixels.
 The time between transitions. Defaults to "4000" in ms.
 
 ### galSlider-transition
-The transition animation. Defaults to "fade".
+The transition animation. Defaults to "fade".  
 All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right"
 
 ### galSlider-lock-onhover
-Sets the behavour if the mouse is over the slider. Defaults to "false".
-If "true", the transition won't happen while the mouse is over the slider.
+Sets the behavour if the mouse is over the slider. Defaults to "false".  
+If "true", the transition won't happen while the mouse is over the slider.  
 If "false", the transition will happen always.
 
 Example
