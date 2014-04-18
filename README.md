@@ -49,10 +49,9 @@ Sets if the slider arrows will be shown. Defaults to "false".
 If "true", arrows will be shown.  
 If "false", arrows won't be shown.
 
-Example
--------
+## Example
 ```
-<div class="galSlider galSlider-rounded" galSlider-width="500" galSlider-height="200" galSlider-time-interval="2000" galSlider-transition="slide-down" galSlider-lock-onhover="true">
+<div id="mySlider" class="galSlider galSlider-rounded" galSlider-width="500" galSlider-height="200" galSlider-time-interval="2000" galSlider-transition="slide-down" galSlider-lock-onhover="true">
   <div class="galSlider-content">
     <strong>Some</strong>, text<br>
     new line.
@@ -60,4 +59,42 @@ Example
   <img class="galSlider-content" src="some_image.jpg">
   <p class="galSlider-content">More text, because yes...</p>
 </div>
+```
+
+API Documentation
+-----------------
+### .galSlider()
+Initializes the slider. If it is already initialized, destroys it and creates it again.
+
+### .galSlider("start")
+Sets the slider autoplay to true.
+
+### .galSlider("stop")
+Sets the slider autoplay to false.
+
+### .galSlider("next")
+Plays the animation to show the next slide.
+
+### .galSlider("previous")
+Plays the animation to show the previous slide.
+
+### .galSlider("addArrows")
+Shows the arrows for passing the slides.
+
+### .galSlider("removeArrows")
+Removes the arrows for passing the slides.
+
+### .galSlider("destroy")
+Destroys the slider.
+
+## Example
+Using the slider from the previous example.
+```
+$("#mySlider").galSlider("stop"); // Stops the slider animation
+$("#mySlider").galSlider("addArrows"); // Adds the arrows to the slider
+
+or
+
+// Does the same than the two lines before
+$("#mySlider").galSlider("stop").galSlider("addArrows");
 ```

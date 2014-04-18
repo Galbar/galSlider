@@ -8,16 +8,16 @@
     <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
     <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
     <script type="text/javascript" src="javascripts/jquery-1.10.2.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="GalSlider/style.css">
-    <script type="text/javascript" src="GalSlider/main.js"></script>
-    <title>GalSlider by Galbar</title>
+    <link rel="stylesheet" type="text/css" href="galSlider/style.css">
+    <script type="text/javascript" src="galSlider/main.js"></script>
+    <title>galSlider by Galbar</title>
   </head>
 
   <body>
 
     <header>
       <div class="container">
-        <h1>GalSlider</h1>
+        <h1>galSlider</h1>
         <h2>A simple slider for web pages. It supports any content you may want to put into it.</h2>
 
         <section id="downloads">
@@ -31,7 +31,7 @@
     <div class="container">
       <section id="main_content">
         <h1>
-<a name="galslider" class="anchor" href="#galslider"><span class="octicon octicon-link"></span></a>GalSlider</h1>
+<a name="galslider" class="anchor" href="#galslider"><span class="octicon octicon-link"></span></a>galSlider</h1>
 
 <h2>
 <a name="adding-it-to-your-web-page" class="anchor" href="#adding-it-to-your-web-page"><span class="octicon octicon-link"></span></a>Adding it to your web page</h2>
@@ -99,22 +99,81 @@ If "false", the animation won't start automatically.</p>
 If "true", arrows will be shown.<br>
 If "false", arrows won't be shown.</p>
 
-<h2>
-<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
-<div class="galSlider galSlider-rounded" galSlider-width="400" galSlider-height="156" galSlider-time-interval="4000" galSlider-transition="slide-right" galSlider-lock-onhover="false" galSlider-show-arrows="true" style="margin:0 100px;">
+<h3>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h3>
+<div id="mySlider" class="galSlider galSlider-rounded" galSlider-width="400" galSlider-height="156" galSlider-time-interval="4000" galSlider-transition="slide-right" galSlider-lock-onhover="false" galSlider-show-arrows="true" style="margin:0 100px;">
   <img src="images/demo_img1.jpg" class="galSlider-content">
   <img src="images/demo_img2.jpg" class="galSlider-content">
   <img src="images/demo_img3.jpg" class="galSlider-content">
 </div>
-<pre><code>&lt;div class="galSlider galSlider-rounded" galSlider-width="400" galSlider-height="156" galSlider-time-interval="4000" galSlider-transition="slide-right" galSlider-lock-onhover="false" galSlider-show-arrows="true"&gt;
+<pre><code>&lt;div id="mySlider" class="galSlider galSlider-rounded" galSlider-width="400" galSlider-height="156" galSlider-time-interval="4000" galSlider-transition="slide-right" galSlider-lock-onhover="false" galSlider-show-arrows="true"&gt;
   &lt;img src="images/demo_img1.jpg" class="galSlider-content"&gt;
   &lt;img src="images/demo_img2.jpg" class="galSlider-content"&gt;
   &lt;img src="images/demo_img3.jpg" class="galSlider-content"&gt;
 &lt;/div&gt;
 </code></pre>
+
+<h2>
+<a name="api-documentation" class="anchor" href="#api-documentation"><span class="octicon octicon-link"></span></a>API Documentation</h2>
+
+<h3>
+<a name="api-galslider" class="anchor" href="#api-galslider"><span class="octicon octicon-link"></span></a>.galSlider()</h3>
+
+<p>Initializes the slider. If it is already initialized, destroys it and creates it again.</p>
+
+<h3>
+<a name="api-galslider" class="anchor" href="#api-galslider"><span class="octicon octicon-link"></span></a>.galSlider()</h3>
+
+<p>Initializes the slider. If it is already initialized, destroys it and creates it again.</p>
+
+<h3>
+<a name="api-galslider-start" class="anchor" href="#api-galslider-start"><span class="octicon octicon-link"></span></a>.galSlider("start")</h3>
+
+<p>Sets the slider autoplay to true.</p>
+
+<h3>
+<a name="api-galslider-stop" class="anchor" href="#api-galslider-stop"><span class="octicon octicon-link"></span></a>.galSlider()</h3>
+
+<p>Sets the slider autoplay to false.</p>
+
+<h3>
+<a name="api-galslider-next" class="anchor" href="#api-galslider-next"><span class="octicon octicon-link"></span></a>.galSlider("next")</h3>
+
+<p>Plays the animation to show the next slide.</p>
+
+<h3>
+<a name="api-galslider-previous" class="anchor" href="#api-galslider-previous"><span class="octicon octicon-link"></span></a>.galSlider("previous")</h3>
+
+<p>Plays the animation to show the previous slide.</p>
+
+<h3>
+<a name="api-galslider-addArrows" class="anchor" href="#api-galslider-addArrows"><span class="octicon octicon-link"></span></a>.galSlider("addArrows")</h3>
+
+<p>Shows the arrows for passing the slides.</p>
+
+<h3>
+<a name="api-galslider-removeArrows" class="anchor" href="#api-galslider-removeArrows"><span class="octicon octicon-link"></span></a>.galSlider("removeArrows")</h3>
+
+<p>Removes the arrows for passing the slides.</p>
+
+<h3>
+<a name="api-galslider-destroy" class="anchor" href="#api-galslider-destroy"><span class="octicon octicon-link"></span></a>.galSlider("destroy")</h3>
+
+<p>Destroys the slider.</p>
+
+<h3>
+<a name="api-example" class="anchor" href="#api-example"><span class="octicon octicon-link"></span></a>Example</h3>
+<p>Using the slider from the previous example.</p>
+<pre><code>$("#mySlider").galSlider("stop"); // Stops the slider animation
+$("#mySlider").galSlider("addArrows"); // Adds the arrows to the slider
+
+or
+
+// Does the same than the two lines before
+$("#mySlider").galSlider("stop").galSlider("addArrows");
+</code></pre>
+
       </section>
     </div>
-
-    
   </body>
 </html>
