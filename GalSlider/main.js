@@ -38,150 +38,235 @@ Sets the behavour if the mouse is over the slider. Defaults to "false".
 If "true", the transition won't happen while the mouse is over the slider.
 If "false", the transition will happen always.
 
+galSlider-autoplay
+------------------
+Sets if the slider animation starts automatically or not. Defaults to "true".
+If "true", the animation will start when the page is loaded.
+If "false", the animation won't start automatically.
+
+galSlider-show-arrows
+---------------------
+Sets if the slider arrows will be shown. Defaults to "false".
+If "true", arrows will be shown.
+If "false", arrows won't be shown.
+
 Example:
 ========
 <div class="galSlider" galSlider-width="500" galSlider-height="200" galSlider-time-interval="2000" galSlider-transition="slide-down" galSlider-lock-onhover="true">
-  <div class="galSlider-content">
-    <strong>Some</strong>, text<br>
-    new line.
-  </div>
-  <img class="galSlider-content" src="some_image.jpg">
-  <p class="galSlider-content">More text, because yes...</p>
+	<div class="galSlider-content">
+		<strong>Some</strong>, text<br>
+		new line.
+	</div>
+	<img class="galSlider-content" src="some_image.jpg">
+	<p class="galSlider-content">More text, because yes...</p>
 </div>
 ***/
 
-function Slider (slider, id) {
-    this.id = id;
-    this.self = slider;
-    this.children = [];
-    this.iteration = 0;
-    this.transition = "fade"; // fade, slide-up, slide-down, slide-left, slide-right
-    transition_values = [ "fade", "slide-up", "slide-down", "slide-left", "slide-right" ];
-    this.time_interval = 4000;
-    this.lock_on_hover = false;
+function Slider (slider) {
+	this.self = slider;
+	this.children = [];
+	this.iteration = 0;
+	this.transition = "fade"; // fade, slide-up, slide-down, slide-left, slide-right
+	var transition_values = [ "fade", "slide-up", "slide-down", "slide-left", "slide-right" ];
+	this.time_interval = 4000;
+	this.lock_on_hover = false;
+	this.interval = undefined;
+	this.autoplay = true;
+	var showArrows = false;
 
-    if (this.self.attr("galSlider-width") != undefined)
-        this.self.width(this.self.attr("galSlider-width")+"px");
-    else
-        this.self.width(700);
+	if (this.self.attr("galSlider-width") != undefined)
+		this.self.width(this.self.attr("galSlider-width")+"px");
+	else
+		this.self.width(700);
 
-    if (this.self.attr("galSlider-height") != undefined)
-        this.self.height(this.self.attr("galSlider-height")+"px");
-    else
-        this.self.height(200);
+	if (this.self.attr("galSlider-height") != undefined)
+		this.self.height(this.self.attr("galSlider-height")+"px");
+	else
+		this.self.height(200);
 
-    if (this.self.attr("galSlider-time-interval") != undefined)
-        this.time_interval = parseInt(this.self.attr("galSlider-time-interval"));
+	if (this.self.attr("galSlider-time-interval") != undefined)
+		this.time_interval = parseInt(this.self.attr("galSlider-time-interval"));
 
-    if (transition_values.indexOf(this.self.attr("galSlider-transition")) > -1)
-        this.transition = this.self.attr("galSlider-transition");
+	if (transition_values.indexOf(this.self.attr("galSlider-transition")) > -1)
+		this.transition = this.self.attr("galSlider-transition");
 
-    if (this.self.attr("galSlider-lock-onhover") != undefined)
-        this.lock_on_hover = (this.self.attr("galSlider-lock-onhover") == "true")
+	if (this.self.attr("galSlider-lock-onhover") != undefined)
+		this.lock_on_hover = (this.self.attr("galSlider-lock-onhover") == "true")
 
-    var a = [];
-    $.each(this.self.children(), function (sl_cont_index, content) {
-        content = $(content);
-        a.push(content);
-    });
-    this.children = a;
-    this.children[0].css("opacity", "1");
-    if (this.transition == "fade") {
-        this.self.children().css("transition", "opacity "+this.time_interval/4000+"s");
-        this.self.children().css("-webkit-transition", "opacity "+this.time_interval/4000+"s");
-        this.self.children().css("top", "0px");
-        this.self.children().css("left", "0px");
-    }
-    else if (this.transition == "slide-right") {
-        this.children[0].css("left", "0px");
-        this.self.children().css("transition", "left "+this.time_interval/4000+"s");
-        this.self.children().css("-webkit-transition", "left "+this.time_interval/4000+"s");
-        this.children[1].css("left", -this.self.width()+"px");
-        this.self.children().css("top", "0px");
-    }
-    else if (this.transition == "slide-left") {
-        this.children[0].css("left", "0px");
-        this.self.children().css("transition", "left "+this.time_interval/4000+"s");
-        this.self.children().css("-webkit-transition", "left "+this.time_interval/4000+"s");
-        this.children[1].css("left", this.self.width()+"px");
-        this.self.children().css("top", "0px");
-    }
-    else if (this.transition == "slide-down") {
-        this.children[0].css("top", "0px");
-        this.self.children().css("transition", "top "+this.time_interval/4000+"s");
-        this.self.children().css("-webkit-transition", "top "+this.time_interval/4000+"s");
-        this.children[1].css("top", -this.self.height()+"px");
-        this.self.children().css("left", "0px");
-    }
-    else if (this.transition == "slide-up") {
-        this.children[0].css("top", "0px");
-        this.self.children().css("transition", "top "+this.time_interval/4000+"s");
-        this.self.children().css("-webkit-transition", "top "+this.time_interval/4000+"s");
-        this.children[1].css("top", this.self.height()+"px");
-        this.self.children().css("left", "0px");
-    }
+	if (this.self.attr("galSlider-autoplay") != undefined)
+		this.autoplay = (this.self.attr("galSlider-autoplay") == "true")
+
+	if (this.self.attr("galSlider-show-arrows") != undefined)
+		showArrows = (this.self.attr("galSlider-show-arrows") == "true")
+
+	var b = this.self.children(".galSlider-content");
+	var a = [];
+	$.each(b, function (sl_cont_index, content) {
+		content = $(content);
+		a.push(content);
+	});
+	this.children = a;
+	this.children[0].css("opacity", "1");
+	if (this.transition == "fade") {
+		b.addClass("transition-opacity")
+		b.css("top", "0px");
+		b.css("left", "0px");
+	}
+	else if (this.transition == "slide-right") {
+		this.children[1%this.children.length].css("left", -this.self.width()+"px");
+		this.children[this.children.length-1].css("left", this.self.width()+"px");
+		this.children[0].css("left", "0px");
+		b.addClass("transition-left")
+		b.css("top", "0px");
+	}
+	else if (this.transition == "slide-left") {
+		this.children[1%this.children.length].css("left", this.self.width()+"px");
+		this.children[this.children.length-1].css("left", -this.self.width()+"px");
+		this.children[0].css("left", "0px");
+		b.addClass("transition-left")
+		b.css("top", "0px");
+	}
+	else if (this.transition == "slide-down") {
+		this.children[1%this.children.length].css("top", -this.self.height()+"px");
+		this.children[this.children.length-1].css("top", this.self.height()+"px");
+		this.children[0].css("top", "0px");
+		b.addClass("transition-top")
+		b.css("left", "0px");
+	}
+	else if (this.transition == "slide-up") {
+		this.children[1%this.children.length].css("top", this.self.height()+"px");
+		this.children[this.children.length-1].css("top", -this.self.height()+"px");
+		this.children[0].css("top", "0px");
+		b.addClass("transition-top")
+		b.css("left", "0px");
+	}
+
+	if (this.autoplay)
+		this.start();
+
+	if (showArrows)
+		this.createArrows();
 };
 
-Slider.prototype.next = function() {
-    if (this.lock_on_hover && this.self.is(":hover")) return;
+Slider.prototype.createArrows = function() {
+	this.destroyArrows();
+	var elem = document.createElement("div");
+	elem.className = "galSlider-arrow-left";
+	var span = document.createElement("span");
+	elem.appendChild(span);
+	this.self.append(elem);
+	elem = document.createElement("div");
+	elem.className = "galSlider-arrow-right";
+	span = document.createElement("span");
+	elem.appendChild(span);
+	this.self.append(elem);
+};
 
-    if (this.transition == "fade") {
-        this.children[this.iteration%this.children.length].css("opacity", "0");
-        this.iteration++;
-        this.children[this.iteration%this.children.length].css("opacity", "1");
-    }
-    else if (this.transition == "slide-right") {
-        var i = this.iteration%this.children.length;
-        this.children[i].css("left", this.self.width()+"px");
-        this.iteration++;
-        i = this.iteration%this.children.length;
-        this.children[i].css("opacity", "1");
-        this.children[i].css("left", 0+"px");
-        i = Math.abs((this.iteration+1)%this.children.length)
-        this.children[i].css("left", -this.self.width()+"px");
-        this.children[i].css("opacity", "0");
-    }
-    else if (this.transition == "slide-left") {
-        var i = this.iteration%this.children.length;
-        this.children[i].css("left", -this.self.width()+"px");
-        this.iteration++;
-        i = this.iteration%this.children.length;
-        this.children[i].css("opacity", "1");
-        this.children[i].css("left", 0+"px");
-        i = Math.abs((this.iteration+1)%this.children.length)
-        this.children[i].css("left", this.self.width()+"px");
-        this.children[i].css("opacity", "0");
-    }
-    else if (this.transition == "slide-down") {
-        var i = this.iteration%this.children.length;
-        this.children[i].css("top", this.self.height()+"px");
-        this.iteration++;
-        i = this.iteration%this.children.length;
-        this.children[i].css("opacity", "1");
-        this.children[i].css("top", 0+"px");
-        i = Math.abs((this.iteration+1)%this.children.length)
-        this.children[i].css("top", -this.self.height()+"px");
-        this.children[i].css("opacity", "0");
-    }
-    else if (this.transition == "slide-up") {
-        var i = this.iteration%this.children.length;
-        this.children[i].css("top", -this.self.height()+"px");
-        this.iteration++;
-        i = this.iteration%this.children.length;
-        this.children[i].css("opacity", "1");
-        this.children[i].css("top", 0+"px");
-        i = Math.abs((this.iteration+1)%this.children.length)
-        this.children[i].css("top", this.self.height()+"px");
-        this.children[i].css("opacity", "0");
-    }
+Slider.prototype.destroyArrows = function() {
+	this.self.children(".galSlider-arrow-left").remove();
+	this.self.children(".galSlider-arrow-right").remove();
+};
+
+Slider.prototype.animate = function() {
+	if (this.lock_on_hover && this.self.is(":hover")) return;
+	this.next();
+}
+
+Slider.prototype.next = function() {
+	if (this.children.length < 2) return;
+	if (this.transition == "fade") {
+		this.children[Math.abs(this.iteration%this.children.length)].css("opacity", "0");
+		this.iteration++;
+		this.children[Math.abs(this.iteration%this.children.length)].css("opacity", "1");
+		this.children[Math.abs(this.iteration%this.children.length)].css("z-index", this.iteration);
+	}
+	else if (this.transition == "slide-right") {
+		var i = Math.abs(this.iteration%this.children.length);
+		this.children[i].css("left", this.self.width()+"px");
+		this.iteration++;
+		i = Math.abs(this.iteration%this.children.length);
+		this.children[i].removeClass("transition-left");
+		this.children[i].css("left", -this.self.width()+"px");
+		this.children[i].addClass("transition-left");
+		this.children[i].css("opacity", "1");
+		this.children[i].css("z-index", this.iteration);
+		this.children[i].css("left", 0+"px");
+		i = Math.abs((this.iteration+1)%this.children.length)
+		this.children[i].css("left", -this.self.width()+"px");
+	}
+	else if (this.transition == "slide-left") {
+		var i = Math.abs(this.iteration%this.children.length);
+		this.children[i].css("left", -this.self.width()+"px");
+		this.iteration++;
+		i = Math.abs(this.iteration%this.children.length);
+		this.children[i].removeClass("transition-left");
+		this.children[i].css("left", this.self.width()+"px");
+		this.children[i].addClass("transition-left");
+		this.children[i].css("opacity", "1");
+		this.children[i].css("z-index", this.iteration);
+		this.children[i].css("left", 0+"px");
+		i = Math.abs((this.iteration+1)%this.children.length)
+		this.children[i].css("left", this.self.width()+"px");
+	}
+	else if (this.transition == "slide-down") {
+		var i = Math.abs(this.iteration%this.children.length);
+		this.children[i].css("top", this.self.height()+"px");
+		this.iteration++;
+		i = Math.abs(this.iteration%this.children.length);
+		this.children[i].removeClass("transition-top");
+		this.children[i].css("top", -this.self.height()+"px");
+		this.children[i].addClass("transition-top");
+		this.children[i].css("opacity", "1");
+		this.children[i].css("z-index", this.iteration);
+		this.children[i].css("top", 0+"px");
+		i = Math.abs((this.iteration+1)%this.children.length)
+		this.children[i].css("top", -this.self.height()+"px");
+	}
+	else if (this.transition == "slide-up") {
+		var i = Math.abs(this.iteration%this.children.length);
+		this.children[i].css("top", -this.self.height()+"px");
+		this.iteration++;
+		i = Math.abs(this.iteration%this.children.length);
+		this.children[i].removeClass("transition-top");
+		this.children[i].css("top", this.self.height()+"px");
+		this.children[i].addClass("transition-top");
+		this.children[i].css("opacity", "1");
+		this.children[i].css("z-index", this.iteration);
+		this.children[i].css("top", 0+"px");
+		i = Math.abs((this.iteration+1)%this.children.length)
+		this.children[i].css("top", this.self.height()+"px");
+	}
+	if (this.autoplay) {
+		this.stop();
+		this.start();
+	}
+};
+
+Slider.prototype.previous = function() {
+	this.iteration += this.children.length-2;
+	this.next();
+};
+
+Slider.prototype.start = function() {
+	var self = this;
+	this.interval = setInterval(function(){self.animate()}, this.time_interval);
+};
+
+Slider.prototype.stop = function() {
+	clearInterval(this.interval);
 };
 
 $(function () {
-    var sliders = $(".galSlider");
-    var sl_objs = [];
-    $.each(sliders, function (slider_index, slider) {
-        slider = $(slider);
-        sl_objs.push(new Slider(slider, slider_index));
-        setInterval(function(){sl_objs[slider_index].next()}, sl_objs[slider_index].time_interval)
-    });
+	var sliders = $(".galSlider");
+	$.each(sliders, function (slider_index, slider) {
+		slider.slider = new Slider($(slider));
+	});
+
+	$(".galSlider-arrow-left").click(function(){
+		$(this).parent(".galSlider")[0].slider.previous();
+	});
+
+	$(".galSlider-arrow-right").click(function(){
+		$(this).parent(".galSlider")[0].slider.next();
+	});
 });
