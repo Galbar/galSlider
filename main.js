@@ -148,6 +148,12 @@ function Slider (slider) {
 		this.createArrows();
 };
 
+Slider.prototype.destroy = function() {
+	this.stop();
+	this.destroyArrows();
+	this.self.removeClass("galSlider");
+};
+
 Slider.prototype.createArrows = function() {
 	this.destroyArrows();
 	var elem = document.createElement("div");
@@ -160,6 +166,13 @@ Slider.prototype.createArrows = function() {
 	span = document.createElement("span");
 	elem.appendChild(span);
 	this.self.append(elem);
+	this.self.children(".galSlider-arrow-left").click(function(){
+		$(this).parent(".galSlider")[0].slider.previous();
+	});
+
+	this.self.children(".galSlider-arrow-right").click(function(){
+		$(this).parent(".galSlider")[0].slider.next();
+	});
 };
 
 Slider.prototype.destroyArrows = function() {
@@ -248,25 +261,55 @@ Slider.prototype.previous = function() {
 };
 
 Slider.prototype.start = function() {
+	this.stop();
 	var self = this;
 	this.interval = setInterval(function(){self.animate()}, this.time_interval);
+	this.autoplay = true;
 };
 
 Slider.prototype.stop = function() {
 	clearInterval(this.interval);
+	this.autoplay = false;
 };
 
+(function($) {
+	$.fn.galSlider = function(a) {
+		$.each($(this), function (slider_index, slider) {
+			var s = slider.slider;
+			if (a == "start") {
+				s.start();
+			}
+			else if (a == "stop") {
+				s.stop();
+			}
+			else if (a == "next") {
+				s.next();
+			}
+			else if (a == "previous") {
+				s.previous();
+			}
+			else if (a == "addArrows") {
+				s.createArrows();
+			}
+			else if (a == "removeArrows") {
+				s.destroyArrows();
+			}
+			else if (a == "destroy") {
+				s.destroy();
+			}
+			else if (a == undefined) {
+				if (s != undefined) {
+					s.destroy();
+				}
+				s = new Slider($(slider));
+				$(slider).addClass("galSlider");
+			}
+			slider.slider = s;
+		});
+		return $(this);
+	}
+})(jQuery);
+
 $(function () {
-	var sliders = $(".galSlider");
-	$.each(sliders, function (slider_index, slider) {
-		slider.slider = new Slider($(slider));
-	});
-
-	$(".galSlider-arrow-left").click(function(){
-		$(this).parent(".galSlider")[0].slider.previous();
-	});
-
-	$(".galSlider-arrow-right").click(function(){
-		$(this).parent(".galSlider")[0].slider.next();
-	});
+	$(".galSlider").galSlider();
 });
