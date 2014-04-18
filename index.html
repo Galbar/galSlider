@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/pygment_trac.css" media="screen" />
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print" />
+    <script type="text/javascript" src="javascripts/jquery-1.10.2.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="GalSlider/style.css">
+    <script type="text/javascript" src="GalSlider/main.js"></script>
+    <title>GalSlider by Galbar</title>
+  </head>
+
+  <body>
+
+    <header>
+      <div class="container">
+        <h1>GalSlider</h1>
+        <h2>A simple slider for web pages. It supports any content you may want to put into it.</h2>
+
+        <section id="downloads">
+          <a href="https://github.com/Galbar/galSlider/zipball/master" class="btn">Download as .zip</a>
+          <a href="https://github.com/Galbar/galSlider/tarball/master" class="btn">Download as .tar.gz</a>
+          <a href="https://github.com/Galbar/galSlider" class="btn btn-github"><span class="icon"></span>View on GitHub</a>
+        </section>
+      </div>
+    </header>
+
+    <div class="container">
+      <section id="main_content">
+        <h1>
+<a name="galslider" class="anchor" href="#galslider"><span class="octicon octicon-link"></span></a>GalSlider</h1>
+
+<h2>
+<a name="adding-it-to-your-web-page" class="anchor" href="#adding-it-to-your-web-page"><span class="octicon octicon-link"></span></a>Adding it to your web page</h2>
+
+<p>It requires jquery 1.10.2 or later. (<a href="http://www.jquery.com">http://www.jquery.com</a>)<br>
+In the head element add the following lines:</p>
+
+<pre><code>&lt;link rel="stylesheet" type="text/css" href="galSlider/style.css"&gt;
+&lt;script type="text/javascript" src="galSlider/main.js"&gt;&lt;/script&gt;
+</code></pre>
+
+<h2>
+<a name="creating-the-slider-element" class="anchor" href="#creating-the-slider-element"><span class="octicon octicon-link"></span></a>Creating the slider element</h2>
+
+<p>Add a div element with class "galSlider". Add any html elements into it with the class "galSlider-content".<br>
+You are done.</p>
+
+<p>If you want it to have the corners rounded, add "galSlider-rounded" to its classes.</p>
+
+<h2>
+<a name="customization" class="anchor" href="#customization"><span class="octicon octicon-link"></span></a>Customization</h2>
+
+<p>You may add the following attributes to the slider element (the div with class "galSlider"),
+but if you are OK with their default values you don't have to add them.</p>
+
+<h3>
+<a name="galslider-width" class="anchor" href="#galslider-width"><span class="octicon octicon-link"></span></a>galSlider-width</h3>
+
+<p>The width of the slider. Defaults to "700" in pixels.</p>
+
+<h3>
+<a name="galslider-height" class="anchor" href="#galslider-height"><span class="octicon octicon-link"></span></a>galSlider-height</h3>
+
+<p>The height of the slider. Defaults to "200" in pixels.</p>
+
+<h3>
+<a name="galslider-time-interval" class="anchor" href="#galslider-time-interval"><span class="octicon octicon-link"></span></a>galSlider-time-interval</h3>
+
+<p>The time between transitions. Defaults to "4000" in ms.</p>
+
+<h3>
+<a name="galslider-transition" class="anchor" href="#galslider-transition"><span class="octicon octicon-link"></span></a>galSlider-transition</h3>
+
+<p>The transition animation. Defaults to "fade".<br>
+All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right"</p>
+
+<h3>
+<a name="galslider-lock-onhover" class="anchor" href="#galslider-lock-onhover"><span class="octicon octicon-link"></span></a>galSlider-lock-onhover</h3>
+
+<p>Sets the behavour if the mouse is over the slider. Defaults to "false".<br>
+If "true", the transition won't happen while the mouse is over the slider.<br>
+If "false", the transition will happen always.</p>
+
+<h2>
+<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+<div class="galSlider galSlider-rounded" galSlider-width="400" galSlider-height="156" galSlider-time-interval="4000" galSlider-transition="slide-down" galSlider-lock-onhover="true" style="margin:0 100px;">
+  <img src="images/demo_img1.jpg" class="galSlider-content">
+  <img src="images/demo_img2.jpg" class="galSlider-content">
+  <img src="images/demo_img3.jpg" class="galSlider-content">
+</div>
+<pre><code>&lt;div class="galSlider galSlider-rounded" galSlider-width="500" galSlider-height="200" galSlider-time-interval="4000" galSlider-transition="slide-down" galSlider-lock-onhover="true"&gt;
+  &lt;img src="images/demo_img1.jpg" class="galSlider-content"&gt;
+  &lt;img src="images/demo_img2.jpg" class="galSlider-content"&gt;
+  &lt;img src="images/demo_img3.jpg" class="galSlider-content"&gt;
+&lt;/div&gt;
+</code></pre>
+      </section>
+    </div>
+
+    
+  </body>
+</html>
