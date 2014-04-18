@@ -39,6 +39,16 @@ Sets the behavour if the mouse is over the slider. Defaults to "false".
 If "true", the transition won't happen while the mouse is over the slider.  
 If "false", the transition will happen always.
 
+### galSlider-autoplay
+Sets if the slider animation starts automatically or not. Defaults to "true".  
+If "true", the animation will start when the page is loaded.  
+If "false", the animation won't start automatically.
+
+### galSlider-show-arrows
+Sets if the slider arrows will be shown. Defaults to "false".  
+If "true", arrows will be shown.  
+If "false", arrows won't be shown.
+
 Example
 -------
 ```
