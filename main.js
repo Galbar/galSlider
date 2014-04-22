@@ -105,6 +105,7 @@ function Slider (slider) {
 		content = $(content);
 		a.push(content);
 	});
+	b.css("opacity", "0")
 	this.children = a;
 	this.children[0].css("opacity", "1");
 	if (this.transition == "fade") {
@@ -152,6 +153,9 @@ Slider.prototype.destroy = function() {
 	this.stop();
 	this.destroyArrows();
 	this.self.removeClass("galSlider");
+	this.self.children("galSlider-content").removeClass("transition-top");
+	this.self.children("galSlider-content").removeClass("transition-left");
+	this.self.children("galSlider-content").css("z-index", "0");
 };
 
 Slider.prototype.createArrows = function() {
