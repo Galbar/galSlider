@@ -191,11 +191,13 @@ Slider.prototype.animate = function() {
 
 Slider.prototype.next = function() {
 	if (this.children.length < 2) return;
+		this.self.children(".galSlider-content").css("z-index", 0);
 	if (this.transition == "fade") {
 		this.children[Math.abs(this.iteration%this.children.length)].css("opacity", "0");
 		this.iteration++;
 		this.children[Math.abs(this.iteration%this.children.length)].css("opacity", "1");
-		this.children[Math.abs(this.iteration%this.children.length)].css("z-index", this.iteration);
+		this.children[Math.abs((this.iteration-1)%this.children.length)].css("z-index", 1);
+		this.children[Math.abs(this.iteration%this.children.length)].css("z-index", 2);
 	}
 	else if (this.transition == "slide-right") {
 		var i = Math.abs(this.iteration%this.children.length);
@@ -206,7 +208,8 @@ Slider.prototype.next = function() {
 		this.children[i].css("left", -this.self.width()+"px");
 		this.children[i].addClass("transition-left");
 		this.children[i].css("opacity", "1");
-		this.children[i].css("z-index", this.iteration);
+		this.children[Math.abs((this.iteration-1)%this.children.length)].css("z-index", 1);
+		this.children[i].css("z-index", 2);
 		this.children[i].css("left", 0+"px");
 		i = Math.abs((this.iteration+1)%this.children.length)
 		this.children[i].css("left", -this.self.width()+"px");
@@ -220,7 +223,8 @@ Slider.prototype.next = function() {
 		this.children[i].css("left", this.self.width()+"px");
 		this.children[i].addClass("transition-left");
 		this.children[i].css("opacity", "1");
-		this.children[i].css("z-index", this.iteration);
+		this.children[Math.abs((this.iteration-1)%this.children.length)].css("z-index", 1);
+		this.children[i].css("z-index", 2);
 		this.children[i].css("left", 0+"px");
 		i = Math.abs((this.iteration+1)%this.children.length)
 		this.children[i].css("left", this.self.width()+"px");
@@ -234,7 +238,8 @@ Slider.prototype.next = function() {
 		this.children[i].css("top", -this.self.height()+"px");
 		this.children[i].addClass("transition-top");
 		this.children[i].css("opacity", "1");
-		this.children[i].css("z-index", this.iteration);
+		this.children[Math.abs((this.iteration-1)%this.children.length)].css("z-index", 1);
+		this.children[i].css("z-index", 2);
 		this.children[i].css("top", 0+"px");
 		i = Math.abs((this.iteration+1)%this.children.length)
 		this.children[i].css("top", -this.self.height()+"px");
@@ -248,7 +253,8 @@ Slider.prototype.next = function() {
 		this.children[i].css("top", this.self.height()+"px");
 		this.children[i].addClass("transition-top");
 		this.children[i].css("opacity", "1");
-		this.children[i].css("z-index", this.iteration);
+		this.children[Math.abs((this.iteration-1)%this.children.length)].css("z-index", 1);
+		this.children[i].css("z-index", 2);
 		this.children[i].css("top", 0+"px");
 		i = Math.abs((this.iteration+1)%this.children.length)
 		this.children[i].css("top", this.self.height()+"px");
