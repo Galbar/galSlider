@@ -84,6 +84,12 @@ Shows the arrows for passing the slides.
 ### .galSlider("removeArrows")
 Removes the arrows for passing the slides.
 
+### .galSlider("index", callback(slideNumber))
+slideNumber is the current slide number.
+
+### .galSlider("goTo", slideNumber)
+Jumps the slider to the slide with number slideNumber.
+
 ### .galSlider("destroy")
 Destroys the slider.
 

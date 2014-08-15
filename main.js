@@ -30,7 +30,7 @@ The time between transitions, Defaults to "4000" in ms.
 galSlider-transition
 --------------------
 The transition animation. Defaults to "fade".
-All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"
+All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right"
 
 galSlider-lock-onhover
 ----------------------
@@ -60,6 +60,59 @@ Example:
 	<img class="galSlider-content" src="some_image.jpg">
 	<p class="galSlider-content">More text, because yes...</p>
 </div>
+
+API Documentation
+=================
+.galSlider()
+------------
+Initializes the slider. If it is already initialized, destroys it and creates it again.
+
+.galSlider("start")
+-------------------
+Sets the slider autoplay to true.
+
+.galSlider("stop")
+------------------
+Sets the slider autoplay to false.
+
+.galSlider("next")
+------------------
+Plays the animation to show the next slide.
+
+.galSlider("previous")
+----------------------
+Plays the animation to show the previous slide.
+
+.galSlider("addArrows")
+-----------------------
+Shows the arrows for passing the slides.
+
+.galSlider("removeArrows")
+--------------------------
+Removes the arrows for passing the slides.
+
+.galSlider("index", callback(slideNumber))
+------------------------------------------
+slideNumber is the current slide number.
+
+.galSlider("goTo", slideNumber)
+-------------------------------
+Jumps the slider to the slide with number slideNumber.
+
+.galSlider("destroy")
+---------------------
+Destroys the slider.
+
+## Example
+Using the slider from the previous example.
+$("#mySlider").galSlider("stop"); // Stops the slider animation
+$("#mySlider").galSlider("addArrows"); // Adds the arrows to the slider
+
+or
+
+// Does the same than the two lines before
+$("#mySlider").galSlider("stop").galSlider("addArrows");
+
 ***/
 
 function Slider (slider) {
