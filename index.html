@@ -4,11 +4,11 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <meta name="description" content="GalSlider : A simple slider for web pages. It supports any content you may want to put into it.">
+    <meta name="description" content="galSlider : A simple but powerful slider for web pages. It supports any content you may want to put into it.">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
 
-    <title>GalSlider</title>
+    <title>galSlider</title>
   </head>
 
   <body>
@@ -18,8 +18,8 @@
         <header class="inner">
           <a id="forkme_banner" href="https://github.com/Galbar/galSlider">View on GitHub</a>
 
-          <h1 id="project_title">GalSlider</h1>
-          <h2 id="project_tagline">A simple slider for web pages. It supports any content you may want to put into it.</h2>
+          <h1 id="project_title">galSlider</h1>
+          <h2 id="project_tagline">A simple but powerful slider for web pages. It supports any content you may want to put into it.</h2>
 
             <section id="downloads">
               <a class="zip_download_link" href="https://github.com/Galbar/galSlider/zipball/master">Download this project as a .zip file</a>
@@ -32,7 +32,7 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="galslider" class="anchor" href="#galslider"><span class="octicon octicon-link"></span></a>GalSlider</h1>
+<a name="galslider" class="anchor" href="#galslider"><span class="octicon octicon-link"></span></a>galSlider</h1>
 
 <h2>
 <a name="adding-it-to-your-web-page" class="anchor" href="#adding-it-to-your-web-page"><span class="octicon octicon-link"></span></a>Adding it to your web page</h2>
@@ -162,6 +162,17 @@ If "false", arrows won't be shown.</p>
 <p>Jumps the slider to the slide with number slideNumber.</p>
 
 <h3>
+<a name="galslidertransition-transitionname" class="anchor" href="#galslidertransition-transitionname"><span class="octicon octicon-link"></span></a>.galSlider("transition", transitionName)</h3>
+
+<p>Change the transition animation.<br>
+All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"</p>
+
+<h3>
+<a name="galslidertimeinterval-value" class="anchor" href="#galslidertimeinterval-value"><span class="octicon octicon-link"></span></a>.galSlider("timeInterval", value)</h3>
+
+<p>Set time between slides to value miliseconds.</p>
+
+<h3>
 <a name="galsliderdestroy" class="anchor" href="#galsliderdestroy"><span class="octicon octicon-link"></span></a>.galSlider("destroy")</h3>
 
 <p>Destroys the slider.</p>
@@ -185,7 +196,7 @@ $("#mySlider").galSlider("stop").galSlider("addArrows");
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">GalSlider maintained by <a href="https://github.com/Galbar">Galbar</a></p>
+        <p class="copyright">galSlider maintained by <a href="https://github.com/Galbar">Galbar</a></p>
         <p>Published with <a href="http://pages.github.com">GitHub Pages</a></p>
       </footer>
     </div>
