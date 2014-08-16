@@ -1,4 +1,4 @@
-GalSlider
+galSlider
 =========
 Adding it to your web page
 -------------------------
