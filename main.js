@@ -30,7 +30,7 @@ The time between transitions, Defaults to "4000" in ms.
 galSlider-transition
 --------------------
 The transition animation. Defaults to "fade".
-All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right"
+All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"
 
 galSlider-lock-onhover
 ----------------------
@@ -99,6 +99,15 @@ slideNumber is the current slide number.
 -------------------------------
 Jumps the slider to the slide with number slideNumber.
 
+.galSlider("transition", transitionName)
+----------------------------------------
+Change the transition animation.
+All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"
+
+.galSlider("timeInterval", value)
+---------------------------------
+Set time between slides to value miliseconds.
+
 .galSlider("destroy")
 ---------------------
 Destroys the slider.
@@ -119,11 +128,11 @@ function Slider (slider) {
 	this.self = slider;
 	this.children = [];
 	this.iteration = 0;
-	this.transition = "fade"; // fade, slide-up, slide-down, slide-left, slide-right
-	this.transition_values = [ "fade", "slide-up", "slide-down", "slide-left", "slide-right"];
+	this.transition = "fade"; // fade, slide-up, slide-down, slide-left, slide-right, random
+	this.transition_values = [ "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"];
 	this.time_interval = 4000;
 	this.lock_on_hover = false;
-	this.interval = undefined;
+	this.timeout = undefined;
 	this.autoplay = true;
 	var showArrows = false;
 
@@ -159,40 +168,14 @@ function Slider (slider) {
 		a.push(content);
 	});
 	this.children = a;
-	if (this.transition == "fade") {
-		b.addClass('no-transition');
-		b.css("opacity", "0")
-		this.children[0].css("opacity", "1");
-		b[0].offsetHeight;
-		b.removeClass('no-transition');
-		b.addClass("transition-opacity");
-		b.css("top", "0px");
-		b.css("left", "0px");
-	}
-	else if (this.transition == "slide-right") {
-		b.css("left", -this.self.width()+"px");
-		this.children[0].css("left", "0px");
-		b.addClass("transition-left");
-		b.css("top", "0px");
-	}
-	else if (this.transition == "slide-left") {
-		b.css("left", this.self.width()+"px");
-		this.children[0].css("left", "0px");
-		b.addClass("transition-left");
-		b.css("top", "0px");
-	}
-	else if (this.transition == "slide-down") {
-		b.css("top", -this.self.height()+"px");
-		this.children[0].css("top", "0px");
-		b.addClass("transition-top");
-		b.css("left", "0px");
-	}
-	else if (this.transition == "slide-up") {
-		b.css("top", this.self.height()+"px");
-		this.children[0].css("top", "0px");
-		b.addClass("transition-top");
-		b.css("left", "0px");
-	}
+	b.css("top", "0px");
+	b.css("left", "0px");
+	b.addClass('no-transition');
+	b.css("opacity", "0")
+	this.children[0].css("opacity", "1");
+	b[0].offsetHeight;
+	b.removeClass('no-transition');
+	b.addClass("transition");
 
 	if (this.autoplay)
 		this.start();
@@ -205,9 +188,7 @@ Slider.prototype.destroy = function() {
 	this.stop();
 	this.destroyArrows();
 	this.self.removeClass("galSlider");
-	this.self.children("galSlider-content").removeClass("transition-top");
-	this.self.children("galSlider-content").removeClass("transition-left");
-	this.self.children("galSlider-content").css("z-index", "0");
+	this.self.children("galSlider-content").removeClass("transition");
 };
 
 Slider.prototype.reverseTransition = function(name) {
@@ -223,6 +204,8 @@ Slider.prototype.reverseTransition = function(name) {
 		return "slide-left";
 	else if (name == "slide-left")
 		return "slide-right";
+	else if (name == "random")
+		return "random";
 };
 
 Slider.prototype.createArrows = function() {
@@ -252,11 +235,34 @@ Slider.prototype.destroyArrows = function() {
 
 Slider.prototype.animate = function(prev, curr, next, transition) {
 	if (this.autoplay) {
-		this.stop();
 		this.start();
+	}
+	prev.addClass("no-transition");
+	curr.addClass("no-transition");
+	next.addClass("no-transition");
+	prev.css("left", "0px").css("top", "0px").css("opacity", "1");
+	curr.css("left", "0px").css("top", "0px").css("opacity", "1");
+	next.css("left", "0px").css("top", "0px").css("opacity", "1");
+	curr[0].offsetHeight;
+	prev.removeClass("no-transition");
+	curr.removeClass("no-transition");
+	next.removeClass("no-transition");
+
+	if (transition == "random") {
+		transition = this.transition_values[Math.floor((Math.random() * 100) % (this.transition_values.length-1))];
 	}
 	if (this.children.length < 2) return;
 	if (transition == "fade") {
+		prev.addClass("no-transition");
+		curr.addClass("no-transition");
+		next.addClass("no-transition");
+		curr.css("opacity", "1");
+		prev.css("opacity", "0");
+		next.css("opacity", "0");
+		curr[0].offsetHeight;
+		prev.removeClass("no-transition");
+		curr.removeClass("no-transition");
+		next.removeClass("no-transition");
 		prev.css("opacity", "0");
 		curr.css("opacity", "0");
 		next.css("opacity", "1");
@@ -325,7 +331,7 @@ Slider.prototype.next = function() {
 	var next = this.children[Math.abs((this.iteration+1)%this.children.length)];
 	this.animate(previous, current, next, this.transition);
 	this.iteration++;
-}
+};
 
 Slider.prototype.previous = function() {
 	var current = this.children[Math.abs(this.iteration%this.children.length)];
@@ -335,20 +341,70 @@ Slider.prototype.previous = function() {
 	this.iteration += this.children.length-1;
 };
 
+Slider.prototype.getIndex = function() {
+	return this.iteration % this.children.length;
+};
+
+Slider.prototype.gotTo = function(b) {
+	if (typeof b !== 'number') {
+		throw new TypeError("(galSlider) Not a number.");
+	}
+	if (b < 0 || b >= this.children.length) {
+		throw new RangeError("(galSlider) Invalid slide index \""+b+"\". Expected number between "+0+" and "+(this.children.length-1)+".");
+	}
+	if (this.autoplay) {
+		this.start();
+	}
+	if (this.iteration%this.children.length != b) {
+		next = this.children[b];
+		curr = this.children[this.iteration%this.children.length];
+		prev = this.children[(this.iteration+this.children.length-1)%this.children.length]
+		this.animate(prev, curr, next, this.transition);
+		this.iteration += this.children.length-(this.iteration%this.children.length)+b;
+	}
+};
+
+Slider.prototype.setTransition = function (b) {
+	if (this.transition_values.indexOf(b) > -1)
+		this.transition = b;
+	else {
+		s = "";
+		var first = true;
+		for (var i = 0; i < this.transition_values.length; i++) {
+			if (first)
+				first = false;
+			else
+				s += ", ";
+			s += "\""+this.transition_values[i]+"\"";
+		}
+		throw new Error("(galSlider) Invalid transition value \""+b+"\". Expected ["+s+"].");
+	}
+};
+
+Slider.prototype.setInterval = function (b) {
+	if (typeof b !== "number" || typeof b === "string") {
+		throw new TypeError("(galSlider) Not a number");
+	}
+	this.time_interval = b;
+	if (this.autoplay) {
+		this.start();
+	}
+};
+
 Slider.prototype.start = function() {
 	this.stop();
 	var self = this;
-	this.interval = setInterval(function(){if (self.lock_on_hover && self.self.is(":hover")) return;self.next()}, this.time_interval);
+	this.timeout = setTimeout(function(){if (self.lock_on_hover && self.self.is(":hover")) return;self.next()}, this.time_interval);
 	this.autoplay = true;
 };
 
 Slider.prototype.stop = function() {
-	clearInterval(this.interval);
+	clearTimeout(this.timeout);
 	this.autoplay = false;
 };
 
 (function($) {
-	$.fn.galSlider = function(a,b,c,d) {
+	$.fn.galSlider = function(a,b) {
 		$.each($(this), function (slider_index, slider) {
 			var s = slider.slider;
 			if (a == "start") {
@@ -373,16 +429,19 @@ Slider.prototype.stop = function() {
 				s.destroy();
 			}
 			else if (a == "index") {
-				b(s.iteration%s.children.length);
+				if (typeof b !== "function") {
+					throw new TypeError("(galSlider) Callback must be a function.");
+				}
+				b(s.getIndex());
 			}
 			else if (a == "goTo") {
-				if (s.iteration%s.children.length != b) {
-					next = s.children[b];
-					curr = s.children[s.iteration%s.children.length];
-					prev = s.children[(s.iteration+s.children.length-1)%s.children.length]
-					s.animate(prev, curr, next, s.transition);
-					s.iteration += s.children.length-(s.iteration%s.children.length)+b;
-				}
+				s.gotTo(b);
+			}
+			else if (a == "transition") {
+				s.setTransition(b);
+			}
+			else if (a == "timeInterval") {
+				s.setInterval(b);
 			}
 			else if (a == undefined) {
 				if (s != undefined) {

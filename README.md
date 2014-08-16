@@ -90,6 +90,13 @@ slideNumber is the current slide number.
 ### .galSlider("goTo", slideNumber)
 Jumps the slider to the slide with number slideNumber.
 
+### .galSlider("transition", transitionName)
+Change the transition animation.  
+All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"
+
+### .galSlider("timeInterval", value)
+Set time between slides to value miliseconds.
+
 ### .galSlider("destroy")
 Destroys the slider.
 
