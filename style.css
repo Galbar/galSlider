@@ -21,6 +21,7 @@
 [class*="galSlider-arrow-"]
 {
 	position: absolute;
+	z-index: 2;
 	top: 0px;
 	height: 100%;
 	width: 25%;

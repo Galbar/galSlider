@@ -171,6 +171,8 @@ function Slider (slider) {
 	b.css("top", "0px");
 	b.css("left", "0px");
 	b.addClass('no-transition');
+	b.css("z-index", "0")
+	this.children[0].css("z-index", "1");
 	b.css("opacity", "0")
 	this.children[0].css("opacity", "1");
 	b[0].offsetHeight;
@@ -237,6 +239,8 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 	if (this.autoplay) {
 		this.start();
 	}
+	curr.css("z-index", "0");
+	next.css("z-index", "1");
 	prev.addClass("no-transition");
 	curr.addClass("no-transition");
 	next.addClass("no-transition");
