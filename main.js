@@ -136,48 +136,47 @@ function Slider (slider) {
 	this.autoplay = true;
 	var showArrows = false;
 
-	if (this.self.attr("galSlider-width") != undefined)
-		this.self.width(this.self.attr("galSlider-width")+"px");
+	this.self.classList.add("galSlider");
+
+	if (this.self.getAttribute("galSlider-width") != undefined)
+		this.self.style.width = this.self.getAttribute("galSlider-width")+"px";
 	else
 		this.self.width(700);
 
-	if (this.self.attr("galSlider-height") != undefined)
-		this.self.height(this.self.attr("galSlider-height")+"px");
+	if (this.self.getAttribute("galSlider-height") != undefined)
+		this.self.style.height = this.self.getAttribute("galSlider-height")+"px";
 	else
-		this.self.height(200);
+		this.self.style.height = 200 + "px";
 
-	if (this.self.attr("galSlider-time-interval") != undefined)
-		this.time_interval = parseInt(this.self.attr("galSlider-time-interval"));
+	if (this.self.getAttribute("galSlider-time-interval") != undefined)
+		this.time_interval = parseInt(this.self.getAttribute("galSlider-time-interval"));
 
-	if (this.transition_values.indexOf(this.self.attr("galSlider-transition")) > -1)
-		this.transition = this.self.attr("galSlider-transition");
+	if (this.transition_values.indexOf(this.self.getAttribute("galSlider-transition")) > -1)
+		this.transition = this.self.getAttribute("galSlider-transition");
 
-	if (this.self.attr("galSlider-lock-onhover") != undefined)
-		this.lock_on_hover = (this.self.attr("galSlider-lock-onhover") == "true");
+	if (this.self.getAttribute("galSlider-lock-onhover") != undefined)
+		this.lock_on_hover = (this.self.getAttribute("galSlider-lock-onhover") == "true");
 
-	if (this.self.attr("galSlider-autoplay") != undefined)
-		this.autoplay = (this.self.attr("galSlider-autoplay") == "true");
+	if (this.self.getAttribute("galSlider-autoplay") != undefined)
+		this.autoplay = (this.self.getAttribute("galSlider-autoplay") == "true");
 
-	if (this.self.attr("galSlider-show-arrows") != undefined)
-		showArrows = (this.self.attr("galSlider-show-arrows") == "true");
+	if (this.self.getAttribute("galSlider-show-arrows") != undefined)
+		showArrows = (this.self.getAttribute("galSlider-show-arrows") == "true");
 
-	var b = this.self.children(".galSlider-content");
+	var b = this.self.getElementsByClassName("galSlider-content");
 	var a = [];
-	$.each(b, function (sl_cont_index, content) {
-		content = $(content);
-		a.push(content);
-	});
+	for (var i = 0; i < b.length; i++) {
+		b[i].classList.add('no-transition');
+		b[i].style.top = "0px";
+		b[i].style.left = "0px";
+		b[i].style.zIndex = "0";
+		b[i].style.opacity = "0";
+		b[i].classList.remove('no-transition');
+		b[i].classList.add("transition");
+		a.push(b[i]);
+	};
 	this.children = a;
-	b.css("top", "0px");
-	b.css("left", "0px");
-	b.addClass('no-transition');
-	b.css("z-index", "0")
-	this.children[0].css("z-index", "1");
-	b.css("opacity", "0")
-	this.children[0].css("opacity", "1");
-	b[0].offsetHeight;
-	b.removeClass('no-transition');
-	b.addClass("transition");
+	this.children[0].style.opacity = "1";
 
 	if (this.autoplay)
 		this.start();
@@ -189,8 +188,11 @@ function Slider (slider) {
 Slider.prototype.destroy = function() {
 	this.stop();
 	this.destroyArrows();
-	this.self.removeClass("galSlider");
-	this.self.children("galSlider-content").removeClass("transition");
+	var childs = this.self.getElementsByClassName("galSlider-content");
+	for (var i = childs.length - 1; i >= 0; i--) {
+		childs[i].classList.remove("transition");
+	};
+	this.self.classList.remove("galSlider");
 };
 
 Slider.prototype.reverseTransition = function(name) {
@@ -216,116 +218,122 @@ Slider.prototype.createArrows = function() {
 	elem.className = "galSlider-arrow-left";
 	var span = document.createElement("span");
 	elem.appendChild(span);
-	this.self.append(elem);
-	$(elem).click(function(){
-		$(this).parent(".galSlider")[0].slider.previous();
-	});
+	this.self.appendChild(elem);
+	var self = this;
+	elem.addEventListener("click", self.previous());
 	elem = document.createElement("div");
 	elem.className = "galSlider-arrow-right";
 	span = document.createElement("span");
 	elem.appendChild(span);
-	this.self.append(elem);
-	$(elem).click(function(){
-		$(this).parent(".galSlider")[0].slider.next();
-	});
+	this.self.appendChild(elem);
+	elem.addEventListener("click", self.next());
 };
 
 Slider.prototype.destroyArrows = function() {
-	this.self.children(".galSlider-arrow-left").remove();
-	this.self.children(".galSlider-arrow-right").remove();
+	if (this.showArrows) {
+		this.self.removeChild(this.self.getElementsByClassName("galSlider-arrow-left")[0]);
+		this.self.removeChild(this.self.getElementsByClassName("galSlider-arrow-right")[0]);
+	}
 };
 
 Slider.prototype.animate = function(prev, curr, next, transition) {
 	if (this.autoplay) {
 		this.start();
 	}
-	curr.css("z-index", "0");
-	next.css("z-index", "1");
-	prev.addClass("no-transition");
-	curr.addClass("no-transition");
-	next.addClass("no-transition");
-	prev.css("left", "0px").css("top", "0px").css("opacity", "1");
-	curr.css("left", "0px").css("top", "0px").css("opacity", "1");
-	next.css("left", "0px").css("top", "0px").css("opacity", "1");
-	curr[0].offsetHeight;
-	prev.removeClass("no-transition");
-	curr.removeClass("no-transition");
-	next.removeClass("no-transition");
+	curr.style.zIndex = "0";
+	next.style.zIndex = "1";
+	prev.classList.add("no-transition");
+	curr.classList.add("no-transition");
+	next.classList.add("no-transition");
+	prev.style.left = "0px";
+	prev.style.top = "0px";
+	prev.style.opacity = "1";
+	curr.style.left = "0px";
+	curr.style.top = "0px";
+	curr.style.opacity = "1";
+	next.style.left = "0px";
+	next.style.top = "0px";
+	next.style.opacity = "1";
+	curr.offsetHeight;
+	prev.classList.remove("no-transition");
+	curr.classList.remove("no-transition");
+	next.classList.remove("no-transition");
 
 	if (transition == "random") {
 		transition = this.transition_values[Math.floor((Math.random() * 100) % (this.transition_values.length-1))];
 	}
 	if (this.children.length < 2) return;
+	console.log(transition);
 	if (transition == "fade") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
-		curr.css("opacity", "1");
-		prev.css("opacity", "0");
-		next.css("opacity", "0");
-		curr[0].offsetHeight;
-		prev.removeClass("no-transition");
-		curr.removeClass("no-transition");
-		next.removeClass("no-transition");
-		prev.css("opacity", "0");
-		curr.css("opacity", "0");
-		next.css("opacity", "1");
+		prev.classList.add("no-transition");
+		curr.classList.add("no-transition");
+		next.classList.add("no-transition");
+		curr.style.opacity = "1";
+		prev.style.opacity = "0";
+		next.style.opacity = "0";
+		curr.offsetHeight;
+		prev.classList.remove("no-transition");
+		curr.classList.remove("no-transition");
+		next.classList.remove("no-transition");
+		prev.style.opacity = "0";
+		curr.style.opacity = "0";
+		next.style.opacity = "1";
 	}
 	else if (transition == "slide-right") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
-		prev.css("left", this.self.width()+"px");
-		curr.css("left", "0px");
-		next.css("left", -this.self.width()+"px");
-		curr[0].offsetHeight;
-		prev.removeClass("no-transition");
-		curr.removeClass("no-transition");
-		next.removeClass("no-transition");
-		curr.css("left", this.self.width()+"px");
-		next.css("left", "0px");
+		prev.classList.add("no-transition");
+		curr.classList.add("no-transition");
+		next.classList.add("no-transition");
+		prev.style.left = this.self.style.width;
+		curr.style.left = "0px";
+		next.style.left = -this.self.style.width;
+		curr.offsetHeight;
+		prev.classList.remove("no-transition");
+		curr.classList.remove("no-transition");
+		next.classList.remove("no-transition");
+		curr.style.left = this.self.style.width;
+		next.style.left = "0px";
 	}
 	else if (transition == "slide-left") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
-		prev.css("left", -this.self.width()+"px");
-		curr.css("left", "0px");
-		next.css("left", this.self.width()+"px");
-		curr[0].offsetHeight;
-		prev.removeClass("no-transition");
-		curr.removeClass("no-transition");
-		next.removeClass("no-transition");
-		curr.css("left", -this.self.width()+"px");
-		next.css("left", "0px");
+		prev.classList.add("no-transition");
+		curr.classList.add("no-transition");
+		next.classList.add("no-transition");
+		prev.style.left = -this.self.style.width;
+		curr.style.left = "0px";
+		next.style.left = this.self.style.width;
+		curr.offsetHeight;
+		prev.classList.remove("no-transition");
+		curr.classList.remove("no-transition");
+		next.classList.remove("no-transition");
+		curr.style.left = -this.self.style.width;
+		next.style.left = "0px";
 	}
 	else if (transition == "slide-down") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
-		prev.css("top", this.self.height()+"px");
-		curr.css("top", "0px");
-		next.css("top", -this.self.height()+"px");
-		curr[0].offsetHeight;
-		prev.removeClass("no-transition");
-		curr.removeClass("no-transition");
-		next.removeClass("no-transition");
-		curr.css("top", this.self.height()+"px");
-		next.css("top", "0px");
+		prev.classList.add("no-transition");
+		curr.classList.add("no-transition");
+		next.classList.add("no-transition");
+		prev.style.top = this.self.style.height;
+		curr.style.top = "0px";
+		next.style.top = -this.self.style.height;
+		curr.offsetHeight;
+		prev.classList.remove("no-transition");
+		curr.classList.remove("no-transition");
+		next.classList.remove("no-transition");
+		curr.style.top = this.self.style.height;
+		next.style.top = "0px";
 	}
 	else if (transition == "slide-up") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
-		prev.css("top", -this.self.height()+"px");
-		curr.css("top", "0px");
-		next.css("top", this.self.height()+"px");
-		curr[0].offsetHeight;
-		prev.removeClass("no-transition");
-		curr.removeClass("no-transition");
-		next.removeClass("no-transition");
-		curr.css("top", -this.self.height()+"px");
-		next.css("top", "0px");
+		prev.classList.add("no-transition");
+		curr.classList.add("no-transition");
+		next.classList.add("no-transition");
+		prev.style.top = -this.self.style.height;
+		curr.style.top = "0px";
+		next.style.top = this.self.style.height;
+		curr.offsetHeight;
+		prev.classList.remove("no-transition");
+		curr.classList.remove("no-transition");
+		next.classList.remove("no-transition");
+		curr.style.top = -this.self.style.height;
+		next.style.top = "0px";
 	}
 };
 
@@ -407,59 +415,64 @@ Slider.prototype.stop = function() {
 	this.autoplay = false;
 };
 
-(function($) {
-	$.fn.galSlider = function(a,b) {
-		$.each($(this), function (slider_index, slider) {
-			var s = slider.slider;
-			if (a == "start") {
-				s.start();
-			}
-			else if (a == "stop") {
-				s.stop();
-			}
-			else if (a == "next") {
-				s.next();
-			}
-			else if (a == "previous") {
-				s.previous();
-			}
-			else if (a == "addArrows") {
-				s.createArrows();
-			}
-			else if (a == "removeArrows") {
-				s.destroyArrows();
-			}
-			else if (a == "destroy") {
-				s.destroy();
-			}
-			else if (a == "index") {
-				if (typeof b !== "function") {
-					throw new TypeError("(galSlider) Callback must be a function.");
+if (window.jQuery) {
+	(function(jQuery) {
+		jQuery.fn.galSlider = function(a,b) {
+			jQuery.each(jQuery(this), function (slider_index, slider) {
+				var s = slider.slider;
+				if (a == "start") {
+					s.start();
 				}
-				b(s.getIndex());
-			}
-			else if (a == "goTo") {
-				s.gotTo(b);
-			}
-			else if (a == "transition") {
-				s.setTransition(b);
-			}
-			else if (a == "timeInterval") {
-				s.setInterval(b);
-			}
-			else if (a == undefined) {
-				if (s != undefined) {
+				else if (a == "stop") {
+					s.stop();
+				}
+				else if (a == "next") {
+					s.next();
+				}
+				else if (a == "previous") {
+					s.previous();
+				}
+				else if (a == "addArrows") {
+					s.createArrows();
+				}
+				else if (a == "removeArrows") {
+					s.destroyArrows();
+				}
+				else if (a == "destroy") {
 					s.destroy();
 				}
-				s = new Slider($(slider));
-				$(slider).addClass("galSlider");
-			}
-			slider.slider = s;
-		});
-		return $(this);
-	}
-})(jQuery);
+				else if (a == "index") {
+					if (typeof b !== "function") {
+						throw new TypeError("(galSlider) Callback must be a function.");
+					}
+					b(s.getIndex());
+				}
+				else if (a == "goTo") {
+					s.gotTo(b);
+				}
+				else if (a == "transition") {
+					s.setTransition(b);
+				}
+				else if (a == "timeInterval") {
+					s.setInterval(b);
+				}
+				else if (a == undefined) {
+					if (s != undefined) {
+						s.destroy();
+					}
+					s = new Slider(slider);
+					jQuery(slider).addClass("galSlider");
+				}
+				slider.slider = s;
+			});
+			return jQuery(this);
+		}
+	})(jQuery);
+}
 
-$(function () {
-	$(".galSlider").galSlider();
-});
+(function () {
+	var elems = document.getElementsByClassName("galSlider");
+	for (var i = elems.length - 1; i >= 0; i--) {
+		elems[i].slider = new Slider(elems[i]);
+	};
+})();
