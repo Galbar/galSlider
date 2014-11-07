@@ -123,7 +123,14 @@ or
 $("#mySlider").galSlider("stop").galSlider("addArrows");
 
 ***/
-
+var galSlider = {
+	isHover: function (e) {
+		return (e.parentElement.querySelector(':hover') === e);
+	},
+	reflow: function (elt){
+		console.log(elt.offsetHeight);
+	}
+}
 function Slider (slider) {
 	this.self = slider;
 	this.children = [];
@@ -166,12 +173,10 @@ function Slider (slider) {
 	var b = this.self.getElementsByClassName("galSlider-content");
 	var a = [];
 	for (var i = 0; i < b.length; i++) {
-		b[i].classList.add('no-transition');
 		b[i].style.top = "0px";
 		b[i].style.left = "0px";
 		b[i].style.zIndex = "0";
 		b[i].style.opacity = "0";
-		b[i].classList.remove('no-transition');
 		b[i].classList.add("transition");
 		a.push(b[i]);
 	};
@@ -220,13 +225,13 @@ Slider.prototype.createArrows = function() {
 	elem.appendChild(span);
 	this.self.appendChild(elem);
 	var self = this;
-	elem.addEventListener("click", self.previous());
+	elem.addEventListener("click", function(){self.previous()});
 	elem = document.createElement("div");
 	elem.className = "galSlider-arrow-right";
 	span = document.createElement("span");
 	elem.appendChild(span);
 	this.self.appendChild(elem);
-	elem.addEventListener("click", self.next());
+	elem.addEventListener("click", function(){self.next()});
 };
 
 Slider.prototype.destroyArrows = function() {
@@ -253,8 +258,8 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 	curr.style.opacity = "1";
 	next.style.left = "0px";
 	next.style.top = "0px";
-	next.style.opacity = "1";
-	curr.offsetHeight;
+	next.style.opacity = "1"
+	galSlider.reflow(curr)
 	prev.classList.remove("no-transition");
 	curr.classList.remove("no-transition");
 	next.classList.remove("no-transition");
@@ -263,7 +268,6 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		transition = this.transition_values[Math.floor((Math.random() * 100) % (this.transition_values.length-1))];
 	}
 	if (this.children.length < 2) return;
-	console.log(transition);
 	if (transition == "fade") {
 		prev.classList.add("no-transition");
 		curr.classList.add("no-transition");
@@ -271,7 +275,7 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		curr.style.opacity = "1";
 		prev.style.opacity = "0";
 		next.style.opacity = "0";
-		curr.offsetHeight;
+		galSlider.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
@@ -286,7 +290,7 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		prev.style.left = this.self.style.width;
 		curr.style.left = "0px";
 		next.style.left = -this.self.style.width;
-		curr.offsetHeight;
+		galSlider.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
@@ -300,7 +304,7 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		prev.style.left = -this.self.style.width;
 		curr.style.left = "0px";
 		next.style.left = this.self.style.width;
-		curr.offsetHeight;
+		galSlider.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
@@ -314,7 +318,7 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		prev.style.top = this.self.style.height;
 		curr.style.top = "0px";
 		next.style.top = -this.self.style.height;
-		curr.offsetHeight;
+		galSlider.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
@@ -328,7 +332,7 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		prev.style.top = -this.self.style.height;
 		curr.style.top = "0px";
 		next.style.top = this.self.style.height;
-		curr.offsetHeight;
+		galSlider.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
@@ -406,7 +410,7 @@ Slider.prototype.setInterval = function (b) {
 Slider.prototype.start = function() {
 	this.stop();
 	var self = this;
-	this.timeout = setTimeout(function(){if (self.lock_on_hover && self.self.is(":hover")) return;self.next()}, this.time_interval);
+	this.timeout = setTimeout(function(){if (self.lock_on_hover && galSlider.isHover(self.self)) return;self.next()}, this.time_interval);
 	this.autoplay = true;
 };
 
