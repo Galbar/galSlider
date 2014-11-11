@@ -12,8 +12,13 @@ var galSliderTools = {
 		s : 10,
 		t : 2
 	},
-	isHover: function (e) {
-		return (e.parentElement.querySelector(':hover') === e);
+	onMouseOver: function () {
+		this.galSlider.is_hovered = true;
+		console.log(this.galSlider.is_hovered);
+	},
+	onMouseOut: function () {
+		this.galSlider.is_hovered = false;
+		console.log(this.galSlider.is_hovered);
 	},
 	reflow: function (elt) {
 		console.log(elt.offsetHeight);
@@ -46,12 +51,16 @@ function galSlider (elem) {
 	this.transition_values = [ "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"];
 	this.time_interval = 4000;
 	this.lock_on_hover = false;
+	this.is_hovered = false;
 	this.timeout = undefined;
 	this.autoplay = true;
 	this.arrowsActive = false;
 	if (elem.galSlider != undefined)
 		elem.galSlider.destroy();
 	elem.galSlider = this;
+	elem.addEventListener("mouseover", galSliderTools.onMouseOver);
+	elem.addEventListener("mouseout", galSliderTools.onMouseOut);
+
 
 	this.self.classList.add("galSlider");
 
@@ -355,10 +364,15 @@ galSlider.prototype.setInterval = function (b) {
  * @brief Begin autoplay
  */
 galSlider.prototype.start = function() {
-	this.stop();
-	var self = this;
-	this.timeout = setTimeout(function(){if (self.lock_on_hover && galSliderTools.isHover(self.self)) return;self.next()}, this.time_interval);
+	if (this.autoplay)
+		this.stop();
 	this.autoplay = true;
+	var self = this;
+	this.timeout = setTimeout(function e() {
+		if (self.lock_on_hover && self.is_hovered)
+			setTimeout(e, self.time_interval);
+		else self.next();
+	}, this.time_interval);
 };
 
 /**
