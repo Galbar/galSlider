@@ -32,7 +32,7 @@ The time between transitions. Defaults to "4000" in ms.
 
 ### galSlider-transition
 The transition animation. Defaults to "fade".  
-All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right"
+All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random".
 
 ### galSlider-lock-onhover
 Sets the behavour if the mouse is over the slider. Defaults to "false".  
