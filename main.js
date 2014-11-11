@@ -1,138 +1,45 @@
-/***
-Adding it to the web page:
-==========================
-It requires jquery 1.10.2 or later. (http://www.jquery.com)
-In the head element add the following line:
-<script type="text/javascript" src="galSlider/main.js"></script>
+////////////////////////////////////////////////////////////////
+//By Galbar (Alessio Linares)                                 //
+//For documentation go to http://galbar.github.io/galSlider/  //
+////////////////////////////////////////////////////////////////
 
-Creating the slider element:
-============================
-Add a div element with class "galSlider". Add any html elements into it with the class "galSlider-content".
-You are done.
-
-Customization:
-==============
-You may add the following attributes to the slider element (the div with class "galSlider"),
-but if you are OK with their default values you don't have to add them.
-
-galSlider-width
----------------
-The width of the slider. Defaults to "700" in pixels.
-
-galSlider-height
-----------------
-The height of the slider. Defaults to "200" in pixels.
-
-galSlider-time-interval
------------------------
-The time between transitions, Defaults to "4000" in ms.
-
-galSlider-transition
---------------------
-The transition animation. Defaults to "fade".
-All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"
-
-galSlider-lock-onhover
-----------------------
-Sets the behavour if the mouse is over the slider. Defaults to "false".
-If "true", the transition won't happen while the mouse is over the slider.
-If "false", the transition will happen always.
-
-galSlider-autoplay
-------------------
-Sets if the slider animation starts automatically or not. Defaults to "true".
-If "true", the animation will start when the page is loaded.
-If "false", the animation won't start automatically.
-
-galSlider-show-arrows
----------------------
-Sets if the slider arrows will be shown. Defaults to "false".
-If "true", arrows will be shown.
-If "false", arrows won't be shown.
-
-Example:
-========
-<div class="galSlider" galSlider-width="500" galSlider-height="200" galSlider-time-interval="2000" galSlider-transition="random" galSlider-lock-onhover="true">
-	<div class="galSlider-content">
-		<strong>Some</strong>, text<br>
-		new line.
-	</div>
-	<img class="galSlider-content" src="some_image.jpg">
-	<p class="galSlider-content">More text, because yes...</p>
-</div>
-
-API Documentation
-=================
-.galSlider()
-------------
-Initializes the slider. If it is already initialized, destroys it and creates it again.
-
-.galSlider("start")
--------------------
-Sets the slider autoplay to true.
-
-.galSlider("stop")
-------------------
-Sets the slider autoplay to false.
-
-.galSlider("next")
-------------------
-Plays the animation to show the next slide.
-
-.galSlider("previous")
-----------------------
-Plays the animation to show the previous slide.
-
-.galSlider("addArrows")
------------------------
-Shows the arrows for passing the slides.
-
-.galSlider("removeArrows")
---------------------------
-Removes the arrows for passing the slides.
-
-.galSlider("index", callback(slideNumber))
-------------------------------------------
-slideNumber is the current slide number.
-
-.galSlider("goTo", slideNumber)
--------------------------------
-Jumps the slider to the slide with number slideNumber.
-
-.galSlider("transition", transitionName)
-----------------------------------------
-Change the transition animation.
-All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"
-
-.galSlider("timeInterval", value)
----------------------------------
-Set time between slides to value miliseconds.
-
-.galSlider("destroy")
----------------------
-Destroys the slider.
-
-## Example
-Using the slider from the previous example.
-$("#mySlider").galSlider("stop"); // Stops the slider animation
-$("#mySlider").galSlider("addArrows"); // Adds the arrows to the slider
-
-or
-
-// Does the same than the two lines before
-$("#mySlider").galSlider("stop").galSlider("addArrows");
-
-***/
-var galSlider = {
+/**
+ * @brief Some utilities
+ */
+var galSliderTools = {
+	jQueryMinimumVersion: {
+		p : 1,
+		s : 10,
+		t : 2
+	},
 	isHover: function (e) {
 		return (e.parentElement.querySelector(':hover') === e);
 	},
-	reflow: function (elt){
+	reflow: function (elt) {
 		console.log(elt.offsetHeight);
+	},
+	checkjQueryVersion: function (v) {
+		var s = parseInt(v.substring(0,v.indexOf(".")));
+		if (s < this.jQueryMinimumVersion.p)
+			return false;
+		v = v.substring(v.indexOf(".")+1,v.length);
+		s = parseInt(v.substring(0,v.indexOf(".")));
+		if (s < this.jQueryMinimumVersion.s)
+			return false;
+		v = v.substring(v.indexOf(".")+1,v.length);
+		s = parseInt(v);
+		if (s < this.jQueryMinimumVersion.t)
+			return false;
+		return true
 	}
-}
-function Slider (slider) {
-	this.self = slider;
+};
+
+/**
+ * @brief galSlider class constructor
+ * @param elem  HTML element to build galSlider
+ */
+function galSlider (elem) {
+	this.self = elem;
 	this.children = [];
 	this.iteration = 0;
 	this.transition = "fade"; // fade, slide-up, slide-down, slide-left, slide-right, random
@@ -141,7 +48,10 @@ function Slider (slider) {
 	this.lock_on_hover = false;
 	this.timeout = undefined;
 	this.autoplay = true;
-	var showArrows = false;
+	this.arrowsActive = false;
+	if (elem.galSlider != undefined)
+		elem.galSlider.destroy();
+	elem.galSlider = this;
 
 	this.self.classList.add("galSlider");
 
@@ -168,39 +78,52 @@ function Slider (slider) {
 		this.autoplay = (this.self.getAttribute("galSlider-autoplay") == "true");
 
 	if (this.self.getAttribute("galSlider-show-arrows") != undefined)
-		showArrows = (this.self.getAttribute("galSlider-show-arrows") == "true");
+		arrowsActive = (this.self.getAttribute("galSlider-show-arrows") == "true");
 
 	var b = this.self.getElementsByClassName("galSlider-content");
 	var a = [];
 	for (var i = 0; i < b.length; i++) {
+		if (i == 0) {
+			b[i].style.opacity = "1";
+			b[i].style.zIndex = "1";
+		}
+		else {
+			b[i].style.opacity = "0";
+			b[i].style.zIndex = "0";
+		}
 		b[i].style.top = "0px";
 		b[i].style.left = "0px";
-		b[i].style.zIndex = "0";
-		b[i].style.opacity = "0";
 		b[i].classList.add("transition");
 		a.push(b[i]);
 	};
 	this.children = a;
-	this.children[0].style.opacity = "1";
+
+	if (arrowsActive)
+		this.showArrows();
 
 	if (this.autoplay)
 		this.start();
-
-	if (showArrows)
-		this.createArrows();
 };
 
-Slider.prototype.destroy = function() {
+/**
+ * @brief Destroy the galSlider instance
+ */
+galSlider.prototype.destroy = function() {
 	this.stop();
-	this.destroyArrows();
+	this.hideArrows();
 	var childs = this.self.getElementsByClassName("galSlider-content");
 	for (var i = childs.length - 1; i >= 0; i--) {
 		childs[i].classList.remove("transition");
 	};
 	this.self.classList.remove("galSlider");
+	this.self.galSlider = undefined;
 };
 
-Slider.prototype.reverseTransition = function(name) {
+/**
+ * @brief given a transition name, return its reverse transition
+ * @return reverse transition of name
+ */
+galSlider.prototype.reverseTransition = function(name) {
 	if (name == undefined)
 		name = this.transition;
 	if (name == "fade")
@@ -217,8 +140,11 @@ Slider.prototype.reverseTransition = function(name) {
 		return "random";
 };
 
-Slider.prototype.createArrows = function() {
-	this.destroyArrows();
+/**
+ * @brief Display built-in galSlider navigation arrows
+ */
+galSlider.prototype.showArrows = function() {
+	this.hideArrows();
 	var elem = document.createElement("div");
 	elem.className = "galSlider-arrow-left";
 	var span = document.createElement("span");
@@ -232,16 +158,29 @@ Slider.prototype.createArrows = function() {
 	elem.appendChild(span);
 	this.self.appendChild(elem);
 	elem.addEventListener("click", function(){self.next()});
+	this.arrowsActive = true;
 };
 
-Slider.prototype.destroyArrows = function() {
-	if (this.showArrows) {
+/**
+ * @brief Hide built-in galSlider navigation arrows
+ */
+galSlider.prototype.hideArrows = function() {
+	if (this.arrowsActive) {
 		this.self.removeChild(this.self.getElementsByClassName("galSlider-arrow-left")[0]);
 		this.self.removeChild(this.self.getElementsByClassName("galSlider-arrow-right")[0]);
+		this.arrowsActive = false;
 	}
 };
 
-Slider.prototype.animate = function(prev, curr, next, transition) {
+/**
+ * @brief Run the animation from curr to next using transition
+ * 
+ * @param prev previous slide
+ * @param curr current slide
+ * @param next next slide
+ * @param transition transition to animate with
+ */
+galSlider.prototype.animate = function(prev, curr, next, transition) {
 	if (this.autoplay) {
 		this.start();
 	}
@@ -258,24 +197,17 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 	curr.style.opacity = "1";
 	next.style.left = "0px";
 	next.style.top = "0px";
-	next.style.opacity = "1"
-	galSlider.reflow(curr)
-	prev.classList.remove("no-transition");
-	curr.classList.remove("no-transition");
-	next.classList.remove("no-transition");
+	next.style.opacity = "1";
 
 	if (transition == "random") {
 		transition = this.transition_values[Math.floor((Math.random() * 100) % (this.transition_values.length-1))];
 	}
 	if (this.children.length < 2) return;
 	if (transition == "fade") {
-		prev.classList.add("no-transition");
-		curr.classList.add("no-transition");
-		next.classList.add("no-transition");
 		curr.style.opacity = "1";
 		prev.style.opacity = "0";
 		next.style.opacity = "0";
-		galSlider.reflow(curr);
+		galSliderTools.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
@@ -284,13 +216,10 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		next.style.opacity = "1";
 	}
 	else if (transition == "slide-right") {
-		prev.classList.add("no-transition");
-		curr.classList.add("no-transition");
-		next.classList.add("no-transition");
 		prev.style.left = this.self.style.width;
 		curr.style.left = "0px";
-		next.style.left = -this.self.style.width;
-		galSlider.reflow(curr);
+		next.style.left = '-' + this.self.style.width;
+		galSliderTools.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
@@ -298,27 +227,21 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		next.style.left = "0px";
 	}
 	else if (transition == "slide-left") {
-		prev.classList.add("no-transition");
-		curr.classList.add("no-transition");
-		next.classList.add("no-transition");
-		prev.style.left = -this.self.style.width;
+		prev.style.left = '-' + this.self.style.width;
 		curr.style.left = "0px";
 		next.style.left = this.self.style.width;
-		galSlider.reflow(curr);
+		galSliderTools.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
-		curr.style.left = -this.self.style.width;
+		curr.style.left = '-' + this.self.style.width;
 		next.style.left = "0px";
 	}
 	else if (transition == "slide-down") {
-		prev.classList.add("no-transition");
-		curr.classList.add("no-transition");
-		next.classList.add("no-transition");
 		prev.style.top = this.self.style.height;
 		curr.style.top = "0px";
-		next.style.top = -this.self.style.height;
-		galSlider.reflow(curr);
+		next.style.top = '-' + this.self.style.height;
+		galSliderTools.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
@@ -326,22 +249,22 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		next.style.top = "0px";
 	}
 	else if (transition == "slide-up") {
-		prev.classList.add("no-transition");
-		curr.classList.add("no-transition");
-		next.classList.add("no-transition");
-		prev.style.top = -this.self.style.height;
+		prev.style.top = '-' + this.self.style.height;
 		curr.style.top = "0px";
 		next.style.top = this.self.style.height;
-		galSlider.reflow(curr);
+		galSliderTools.reflow(curr);
 		prev.classList.remove("no-transition");
 		curr.classList.remove("no-transition");
 		next.classList.remove("no-transition");
-		curr.style.top = -this.self.style.height;
+		curr.style.top = '-' + this.self.style.height;
 		next.style.top = "0px";
 	}
 };
 
-Slider.prototype.next = function() {
+/**
+ * @brief slide to next slide
+ */
+galSlider.prototype.next = function() {
 	var current = this.children[Math.abs(this.iteration%this.children.length)];
 	var previous = this.children[Math.abs((this.iteration+this.children.length-1)%this.children.length)];
 	var next = this.children[Math.abs((this.iteration+1)%this.children.length)];
@@ -349,7 +272,10 @@ Slider.prototype.next = function() {
 	this.iteration++;
 };
 
-Slider.prototype.previous = function() {
+/**
+ * @brief slide to previous slide
+ */
+galSlider.prototype.previous = function() {
 	var current = this.children[Math.abs(this.iteration%this.children.length)];
 	var previous = this.children[Math.abs((this.iteration+1)%this.children.length)];
 	var next = this.children[Math.abs((this.iteration+this.children.length-1)%this.children.length)];
@@ -357,11 +283,19 @@ Slider.prototype.previous = function() {
 	this.iteration += this.children.length-1;
 };
 
-Slider.prototype.getIndex = function() {
+/**
+ * @brief Get the current slide index
+ * @return current slide index
+ */
+galSlider.prototype.getIndex = function() {
 	return this.iteration % this.children.length;
 };
 
-Slider.prototype.gotTo = function(b) {
+/**
+ * @brief Go to slide with index b
+ * @param  b index of slide to go to
+ */
+galSlider.prototype.gotTo = function(b) {
 	if (typeof b !== 'number') {
 		throw new TypeError("(galSlider) Not a number.");
 	}
@@ -380,7 +314,12 @@ Slider.prototype.gotTo = function(b) {
 	}
 };
 
-Slider.prototype.setTransition = function (b) {
+/**
+ * @brief Set new animation transition
+ * 
+ * @param b name of transition
+ */
+galSlider.prototype.setTransition = function (b) {
 	if (this.transition_values.indexOf(b) > -1)
 		this.transition = b;
 	else {
@@ -397,7 +336,12 @@ Slider.prototype.setTransition = function (b) {
 	}
 };
 
-Slider.prototype.setInterval = function (b) {
+/**
+ * @brief Set new time between slides
+ * 
+ * @param b time in miliseconds
+ */
+galSlider.prototype.setInterval = function (b) {
 	if (typeof b !== "number" || typeof b === "string") {
 		throw new TypeError("(galSlider) Not a number");
 	}
@@ -407,23 +351,29 @@ Slider.prototype.setInterval = function (b) {
 	}
 };
 
-Slider.prototype.start = function() {
+/**
+ * @brief Begin autoplay
+ */
+galSlider.prototype.start = function() {
 	this.stop();
 	var self = this;
-	this.timeout = setTimeout(function(){if (self.lock_on_hover && galSlider.isHover(self.self)) return;self.next()}, this.time_interval);
+	this.timeout = setTimeout(function(){if (self.lock_on_hover && galSliderTools.isHover(self.self)) return;self.next()}, this.time_interval);
 	this.autoplay = true;
 };
 
-Slider.prototype.stop = function() {
+/**
+ * @brief End autoplay
+ */
+galSlider.prototype.stop = function() {
 	clearTimeout(this.timeout);
 	this.autoplay = false;
 };
 
-if (window.jQuery) {
+if (window.jQuery && galSliderTools.checkjQueryVersion(jQuery.fn.jquery)) {
 	(function(jQuery) {
 		jQuery.fn.galSlider = function(a,b) {
-			jQuery.each(jQuery(this), function (slider_index, slider) {
-				var s = slider.slider;
+			jQuery.each(jQuery(this), function (slider_index, elem) {
+				var s = elem.galSlider;
 				if (a == "start") {
 					s.start();
 				}
@@ -436,11 +386,11 @@ if (window.jQuery) {
 				else if (a == "previous") {
 					s.previous();
 				}
-				else if (a == "addArrows") {
-					s.createArrows();
+				else if (a == "showArrows") {
+					s.showArrows();
 				}
-				else if (a == "removeArrows") {
-					s.destroyArrows();
+				else if (a == "hideArrows") {
+					s.hideArrows();
 				}
 				else if (a == "destroy") {
 					s.destroy();
@@ -461,13 +411,9 @@ if (window.jQuery) {
 					s.setInterval(b);
 				}
 				else if (a == undefined) {
-					if (s != undefined) {
-						s.destroy();
-					}
-					s = new Slider(slider);
+					new galSlider(elem);
 					jQuery(slider).addClass("galSlider");
 				}
-				slider.slider = s;
 			});
 			return jQuery(this);
 		}
@@ -477,6 +423,6 @@ if (window.jQuery) {
 (function () {
 	var elems = document.getElementsByClassName("galSlider");
 	for (var i = elems.length - 1; i >= 0; i--) {
-		elems[i].slider = new Slider(elems[i]);
+		new galSlider(elems[i]);
 	};
 })();
