@@ -247,19 +247,11 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 	prev.css("left", "0px").css("top", "0px").css("opacity", "1");
 	curr.css("left", "0px").css("top", "0px").css("opacity", "1");
 	next.css("left", "0px").css("top", "0px").css("opacity", "1");
-	curr[0].offsetHeight;
-	prev.removeClass("no-transition");
-	curr.removeClass("no-transition");
-	next.removeClass("no-transition");
-
 	if (transition == "random") {
 		transition = this.transition_values[Math.floor((Math.random() * 100) % (this.transition_values.length-1))];
 	}
 	if (this.children.length < 2) return;
 	if (transition == "fade") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
 		curr.css("opacity", "1");
 		prev.css("opacity", "0");
 		next.css("opacity", "0");
@@ -272,9 +264,6 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		next.css("opacity", "1");
 	}
 	else if (transition == "slide-right") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
 		prev.css("left", this.self.width()+"px");
 		curr.css("left", "0px");
 		next.css("left", -this.self.width()+"px");
@@ -286,9 +275,6 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		next.css("left", "0px");
 	}
 	else if (transition == "slide-left") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
 		prev.css("left", -this.self.width()+"px");
 		curr.css("left", "0px");
 		next.css("left", this.self.width()+"px");
@@ -300,9 +286,6 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		next.css("left", "0px");
 	}
 	else if (transition == "slide-down") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
 		prev.css("top", this.self.height()+"px");
 		curr.css("top", "0px");
 		next.css("top", -this.self.height()+"px");
@@ -314,9 +297,6 @@ Slider.prototype.animate = function(prev, curr, next, transition) {
 		next.css("top", "0px");
 	}
 	else if (transition == "slide-up") {
-		prev.addClass("no-transition");
-		curr.addClass("no-transition");
-		next.addClass("no-transition");
 		prev.css("top", -this.self.height()+"px");
 		curr.css("top", "0px");
 		next.css("top", this.self.height()+"px");
