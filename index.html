@@ -7,6 +7,7 @@
     <meta name="description" content="galSlider : A simple but powerful slider for web pages. It supports any content you may want to put into it.">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+    <link rel="stylesheet" type="text/css" media="screen" href="galSlider/style.css">
 
     <title>galSlider</title>
   </head>
@@ -33,7 +34,11 @@
       <section id="main_content" class="inner">
         <h1>
 <a name="galslider" class="anchor" href="#galslider"><span class="octicon octicon-link"></span></a>galSlider</h1>
-
+  <div id="mySlider" class="galSlider galSlider-rounded" galSlider-width="400" galSlider-height="156" galSlider-time-interval="4000" galSlider-transition="random" galSlider-lock-onhover="true" galSlider-show-arrows="true" style="background-color:black; margin-left:120px">
+    <img class="galSlider-content" src="images/demo_img1.jpg">
+    <img class="galSlider-content" src="images/demo_img2.jpg">
+    <img class="galSlider-content" src="images/demo_img3.jpg">
+  </div>
 <h2>
 <a name="adding-it-to-your-web-page" class="anchor" href="#adding-it-to-your-web-page"><span class="octicon octicon-link"></span></a>Adding it to your web page</h2>
 
@@ -201,7 +206,7 @@ $("#mySlider").galSlider("stop").galSlider("addArrows");
       </footer>
     </div>
 
-    
+<script type="text/javascript" src="galSlider/main.js"></script>
 
   </body>
 </html>
