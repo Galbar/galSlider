@@ -32,20 +32,20 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="galslider" class="anchor" href="#galslider"><span class="octicon octicon-link"></span></a>galSlider</h1>
+<a id="galslider" class="anchor" href="#galslider" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider</h1>
 
 <h2>
-<a name="adding-it-to-your-web-page" class="anchor" href="#adding-it-to-your-web-page"><span class="octicon octicon-link"></span></a>Adding it to your web page</h2>
+<a id="adding-it-to-your-web-page" class="anchor" href="#adding-it-to-your-web-page" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding it to your web page</h2>
 
-<p>It requires jquery 1.10.2 or later. (<a href="http://www.jquery.com">http://www.jquery.com</a>)<br>
-In the head element add the following lines:</p>
+<p>Include the galSlider JavaScript and CSS files in your HTML:</p>
 
 <pre><code>&lt;link rel="stylesheet" type="text/css" href="galSlider/style.css"&gt;
+
 &lt;script type="text/javascript" src="galSlider/main.js"&gt;&lt;/script&gt;
 </code></pre>
 
 <h2>
-<a name="creating-the-slider-element" class="anchor" href="#creating-the-slider-element"><span class="octicon octicon-link"></span></a>Creating the slider element</h2>
+<a id="creating-the-slider-element" class="anchor" href="#creating-the-slider-element" aria-hidden="true"><span class="octicon octicon-link"></span></a>Creating the slider element</h2>
 
 <p>Add a div element with class "galSlider". Add any html elements into it with the class "galSlider-content".<br>
 You are done.</p>
@@ -53,55 +53,55 @@ You are done.</p>
 <p>If you want it to have the corners rounded, add "galSlider-rounded" to its classes.</p>
 
 <h2>
-<a name="customization" class="anchor" href="#customization"><span class="octicon octicon-link"></span></a>Customization</h2>
+<a id="customization" class="anchor" href="#customization" aria-hidden="true"><span class="octicon octicon-link"></span></a>Customization</h2>
 
 <p>You may add the following attributes to the slider element (the div with class "galSlider"),
 but if you are OK with their default values you don't have to add them.</p>
 
 <h3>
-<a name="galslider-width" class="anchor" href="#galslider-width"><span class="octicon octicon-link"></span></a>galSlider-width</h3>
+<a id="galslider-width" class="anchor" href="#galslider-width" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider-width</h3>
 
 <p>The width of the slider. Defaults to "700" in pixels.</p>
 
 <h3>
-<a name="galslider-height" class="anchor" href="#galslider-height"><span class="octicon octicon-link"></span></a>galSlider-height</h3>
+<a id="galslider-height" class="anchor" href="#galslider-height" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider-height</h3>
 
 <p>The height of the slider. Defaults to "200" in pixels.</p>
 
 <h3>
-<a name="galslider-time-interval" class="anchor" href="#galslider-time-interval"><span class="octicon octicon-link"></span></a>galSlider-time-interval</h3>
+<a id="galslider-time-interval" class="anchor" href="#galslider-time-interval" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider-time-interval</h3>
 
 <p>The time between transitions. Defaults to "4000" in ms.</p>
 
 <h3>
-<a name="galslider-transition" class="anchor" href="#galslider-transition"><span class="octicon octicon-link"></span></a>galSlider-transition</h3>
+<a id="galslider-transition" class="anchor" href="#galslider-transition" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider-transition</h3>
 
 <p>The transition animation. Defaults to "fade".<br>
-All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right"</p>
+All the posible options are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random".</p>
 
 <h3>
-<a name="galslider-lock-onhover" class="anchor" href="#galslider-lock-onhover"><span class="octicon octicon-link"></span></a>galSlider-lock-onhover</h3>
+<a id="galslider-lock-onhover" class="anchor" href="#galslider-lock-onhover" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider-lock-onhover</h3>
 
 <p>Sets the behavour if the mouse is over the slider. Defaults to "false".<br>
 If "true", the transition won't happen while the mouse is over the slider.<br>
 If "false", the transition will happen always.</p>
 
 <h3>
-<a name="galslider-autoplay" class="anchor" href="#galslider-autoplay"><span class="octicon octicon-link"></span></a>galSlider-autoplay</h3>
+<a id="galslider-autoplay" class="anchor" href="#galslider-autoplay" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider-autoplay</h3>
 
 <p>Sets if the slider animation starts automatically or not. Defaults to "true".<br>
 If "true", the animation will start when the page is loaded.<br>
 If "false", the animation won't start automatically.</p>
 
 <h3>
-<a name="galslider-show-arrows" class="anchor" href="#galslider-show-arrows"><span class="octicon octicon-link"></span></a>galSlider-show-arrows</h3>
+<a id="galslider-show-arrows" class="anchor" href="#galslider-show-arrows" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider-show-arrows</h3>
 
 <p>Sets if the slider arrows will be shown. Defaults to "false".<br>
 If "true", arrows will be shown.<br>
 If "false", arrows won't be shown.</p>
 
 <h2>
-<a name="example" class="anchor" href="#example"><span class="octicon octicon-link"></span></a>Example</h2>
+<a id="example" class="anchor" href="#example" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h2>
 
 <pre><code>&lt;div id="mySlider" class="galSlider galSlider-rounded" galSlider-width="500" galSlider-height="200" galSlider-time-interval="2000" galSlider-transition="slide-down" galSlider-lock-onhover="true"&gt;
   &lt;div class="galSlider-content"&gt;
@@ -114,75 +114,160 @@ If "false", arrows won't be shown.</p>
 </code></pre>
 
 <h2>
-<a name="api-documentation" class="anchor" href="#api-documentation"><span class="octicon octicon-link"></span></a>API Documentation</h2>
+<a id="javascript-api-documentation" class="anchor" href="#javascript-api-documentation" aria-hidden="true"><span class="octicon octicon-link"></span></a>JavaScript API Documentation</h2>
+
+<p>When a new galSlider object is created from an HTML node e, it is stored into e.galSlider and you can access it from there:</p>
+
+<pre><code>var e = document.getElementById('mySlider');
+new galSlider(e); // Create a new galSlider from e
+e.galSlider;
+&gt; Object { self: &lt;div#mySlider.galSlider.galSl...timeout: 5, autoplay: true }
+</code></pre>
 
 <h3>
-<a name="galslider-1" class="anchor" href="#galslider-1"><span class="octicon octicon-link"></span></a>.galSlider()</h3>
+<a id="start" class="anchor" href="#start" aria-hidden="true"><span class="octicon octicon-link"></span></a>.start()</h3>
 
-<p>Initializes the slider. If it is already initialized, destroys it and creates it again.</p>
+<p>Make the galSlider slide automatically.</p>
 
 <h3>
-<a name="galsliderstart" class="anchor" href="#galsliderstart"><span class="octicon octicon-link"></span></a>.galSlider("start")</h3>
+<a id="stop" class="anchor" href="#stop" aria-hidden="true"><span class="octicon octicon-link"></span></a>.stop()</h3>
+
+<p>Make the galSlider stop sliding automatically.</p>
+
+<h3>
+<a id="next" class="anchor" href="#next" aria-hidden="true"><span class="octicon octicon-link"></span></a>.next()</h3>
+
+<p>Make the galSlider go to the next slide.</p>
+
+<h3>
+<a id="previous" class="anchor" href="#previous" aria-hidden="true"><span class="octicon octicon-link"></span></a>.previous()</h3>
+
+<p>Make the galSlider go to the previous slide.</p>
+
+<h3>
+<a id="showarrows" class="anchor" href="#showarrows" aria-hidden="true"><span class="octicon octicon-link"></span></a>.showArrows()</h3>
+
+<p>Show the slider built-in navigation arrows.</p>
+
+<h3>
+<a id="hidearrows" class="anchor" href="#hidearrows" aria-hidden="true"><span class="octicon octicon-link"></span></a>.hideArrows()</h3>
+
+<p>Hide the slider built-in navigation arrows.</p>
+
+<h3>
+<a id="getindex" class="anchor" href="#getindex" aria-hidden="true"><span class="octicon octicon-link"></span></a>.getIndex()</h3>
+
+<p>Returns the index of the current slide.</p>
+
+<h3>
+<a id="gottoi" class="anchor" href="#gottoi" aria-hidden="true"><span class="octicon octicon-link"></span></a>.gotTo(i)</h3>
+
+<p>Make the galSlider go to the ith slide.</p>
+
+<h3>
+<a id="settransitiont" class="anchor" href="#settransitiont" aria-hidden="true"><span class="octicon octicon-link"></span></a>.setTransition(t)</h3>
+
+<p>Set the transition animation to t.<br>
+All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random".</p>
+
+<h3>
+<a id="setintervalt" class="anchor" href="#setintervalt" aria-hidden="true"><span class="octicon octicon-link"></span></a>.setInterval(t)</h3>
+
+<p>Set the time each slide is visible to t miliseconds</p>
+
+<h3>
+<a id="destroy" class="anchor" href="#destroy" aria-hidden="true"><span class="octicon octicon-link"></span></a>.destroy()</h3>
+
+<p>Destroys the slider.</p>
+
+<h2>
+<a id="example-1" class="anchor" href="#example-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h2>
+
+<p>Using the slider from the first example.</p>
+
+<pre><code>var e = document.getElementById('mySlider');
+new galSlider(e);         // Create a new galSlider from e
+e.galSlider.stop();       // Stops the slider animation
+e.galSlider.showArrows(); // Adds the arrows to the slider
+</code></pre>
+
+<h2>
+<a id="jquery-api-documentation-optional" class="anchor" href="#jquery-api-documentation-optional" aria-hidden="true"><span class="octicon octicon-link"></span></a>jQuery API Documentation (optional)</h2>
+
+<p>Requires jQuery 1.10.2 or later. (<a href="http://www.jquery.com">http://www.jquery.com</a>)<br>
+If you are using jQuery you can interact with the slider using the jQuery API:</p>
+
+<pre><code>$('.mySlider').galSlider(); // Create a new galSlider for each element with class 'mySlider'
+</code></pre>
+
+<h3>
+<a id="galslider-1" class="anchor" href="#galslider-1" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider()</h3>
+
+<p>Initializes the slider.</p>
+
+<h3>
+<a id="galsliderstart" class="anchor" href="#galsliderstart" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("start")</h3>
 
 <p>Sets the slider autoplay to true.</p>
 
 <h3>
-<a name="galsliderstop" class="anchor" href="#galsliderstop"><span class="octicon octicon-link"></span></a>.galSlider("stop")</h3>
+<a id="galsliderstop" class="anchor" href="#galsliderstop" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("stop")</h3>
 
 <p>Sets the slider autoplay to false.</p>
 
 <h3>
-<a name="galslidernext" class="anchor" href="#galslidernext"><span class="octicon octicon-link"></span></a>.galSlider("next")</h3>
+<a id="galslidernext" class="anchor" href="#galslidernext" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("next")</h3>
 
 <p>Plays the animation to show the next slide.</p>
 
 <h3>
-<a name="galsliderprevious" class="anchor" href="#galsliderprevious"><span class="octicon octicon-link"></span></a>.galSlider("previous")</h3>
+<a id="galsliderprevious" class="anchor" href="#galsliderprevious" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("previous")</h3>
 
 <p>Plays the animation to show the previous slide.</p>
 
 <h3>
-<a name="galslideraddarrows" class="anchor" href="#galslideraddarrows"><span class="octicon octicon-link"></span></a>.galSlider("addArrows")</h3>
+<a id="galslidershowarrows" class="anchor" href="#galslidershowarrows" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("showArrows")</h3>
 
 <p>Shows the arrows for passing the slides.</p>
 
 <h3>
-<a name="galsliderremovearrows" class="anchor" href="#galsliderremovearrows"><span class="octicon octicon-link"></span></a>.galSlider("removeArrows")</h3>
+<a id="galsliderhidearrows" class="anchor" href="#galsliderhidearrows" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("hideArrows")</h3>
 
 <p>Removes the arrows for passing the slides.</p>
 
 <h3>
-<a name="galsliderindex-callbackslidenumber" class="anchor" href="#galsliderindex-callbackslidenumber"><span class="octicon octicon-link"></span></a>.galSlider("index", callback(slideNumber))</h3>
+<a id="galsliderindex-callbackslidenumber" class="anchor" href="#galsliderindex-callbackslidenumber" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("index", callback(slideNumber))</h3>
 
 <p>slideNumber is the current slide number.</p>
 
 <h3>
-<a name="galslidergoto-slidenumber" class="anchor" href="#galslidergoto-slidenumber"><span class="octicon octicon-link"></span></a>.galSlider("goTo", slideNumber)</h3>
+<a id="galslidergoto-slidenumber" class="anchor" href="#galslidergoto-slidenumber" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("goTo", slideNumber)</h3>
 
 <p>Jumps the slider to the slide with number slideNumber.</p>
 
 <h3>
-<a name="galslidertransition-transitionname" class="anchor" href="#galslidertransition-transitionname"><span class="octicon octicon-link"></span></a>.galSlider("transition", transitionName)</h3>
+<a id="galslidertransition-transitionname" class="anchor" href="#galslidertransition-transitionname" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("transition", transitionName)</h3>
 
 <p>Change the transition animation.<br>
 All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random"</p>
 
 <h3>
-<a name="galslidertimeinterval-value" class="anchor" href="#galslidertimeinterval-value"><span class="octicon octicon-link"></span></a>.galSlider("timeInterval", value)</h3>
+<a id="galslidertimeinterval-value" class="anchor" href="#galslidertimeinterval-value" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("timeInterval", value)</h3>
 
 <p>Set time between slides to value miliseconds.</p>
 
 <h3>
-<a name="galsliderdestroy" class="anchor" href="#galsliderdestroy"><span class="octicon octicon-link"></span></a>.galSlider("destroy")</h3>
+<a id="galsliderdestroy" class="anchor" href="#galsliderdestroy" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("destroy")</h3>
 
 <p>Destroys the slider.</p>
 
 <h2>
-<a name="example-1" class="anchor" href="#example-1"><span class="octicon octicon-link"></span></a>Example</h2>
+<a id="example-2" class="anchor" href="#example-2" aria-hidden="true"><span class="octicon octicon-link"></span></a>Example</h2>
 
-<p>Using the slider from the previous example.</p>
+<p>Using the slider from the first example.</p>
 
-<pre><code>$("#mySlider").galSlider("stop"); // Stops the slider animation
+<pre><code>$("#mySlider").galSlider(); // Create the slider
+$("#mySlider").galSlider("stop"); // Stops the slider animation
 $("#mySlider").galSlider("addArrows"); // Adds the arrows to the slider
 
 or
