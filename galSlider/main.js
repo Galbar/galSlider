@@ -14,14 +14,12 @@ var galSliderTools = {
 	},
 	onMouseOver: function () {
 		this.galSlider.is_hovered = true;
-		console.log(this.galSlider.is_hovered);
 	},
 	onMouseOut: function () {
 		this.galSlider.is_hovered = false;
-		console.log(this.galSlider.is_hovered);
 	},
 	reflow: function (elt) {
-		console.log(elt.offsetHeight);
+		elt.offsetHeight;
 	},
 	checkjQueryVersion: function (v) {
 		var s = parseInt(v.substring(0,v.indexOf(".")));
@@ -36,6 +34,45 @@ var galSliderTools = {
 		if (s < this.jQueryMinimumVersion.t)
 			return false;
 		return true
+	},
+	checkIfNumber: function(n) {
+		if (typeof n !== "number" || typeof n === "string") {
+			throw new TypeError("(galSlider) Not a number");
+			return false;
+		}
+		return true;
+	},
+	checkIfInRange: function(i, s, f) {
+		if (i < s || i >= f) {
+			throw new RangeError("(galSlider) Number \""+i+"\" not in valid range. Expected number in ["+s+", "+(f-1)+").");
+			return false;
+		}
+		return true;
+	},
+	checkIfValidTransition: function(v, s) {
+		if (s.transition_values.indexOf(v) > -1)
+			return true;
+		else {
+			l = "";
+			var first = true;
+			for (var i = 0; i < s.transition_values.length; i++) {
+				if (first)
+					first = false;
+				else
+					l += ", ";
+				l += "\""+s.transition_values[i]+"\"";
+			}
+			throw new Error("(galSlider) Invalid transition value \""+v+"\". Expected ["+l+"].");
+			return false;
+		}
+	},
+	checkIfHTMLElement: function(e) {
+		if (typeof HTMLElement === "object" ? e instanceof HTMLElement : //DOM2
+			e && typeof e === "object" && e !== null && e.nodeType === 1 && typeof e.nodeName==="string")
+			return true;
+
+		throw new Error("(galSlider) Expected HTMLElement, found:\n"+JSON.stringify(e));
+		return false;
 	}
 };
 
@@ -67,7 +104,7 @@ function galSlider (elem) {
 	if (this.self.getAttribute("galSlider-width") != undefined)
 		this.self.style.width = this.self.getAttribute("galSlider-width")+"px";
 	else
-		this.self.width(700);
+		this.self.style.width = 700 + "px";
 
 	if (this.self.getAttribute("galSlider-height") != undefined)
 		this.self.style.height = this.self.getAttribute("galSlider-height")+"px";
@@ -90,22 +127,9 @@ function galSlider (elem) {
 		arrowsActive = (this.self.getAttribute("galSlider-show-arrows") == "true");
 
 	var b = this.self.getElementsByClassName("galSlider-content");
-	var a = [];
 	for (var i = 0; i < b.length; i++) {
-		if (i == 0) {
-			b[i].style.opacity = "1";
-			b[i].style.zIndex = "1";
-		}
-		else {
-			b[i].style.opacity = "0";
-			b[i].style.zIndex = "0";
-		}
-		b[i].style.top = "0px";
-		b[i].style.left = "0px";
-		b[i].classList.add("transition");
-		a.push(b[i]);
+		this.append(b[i]);
 	};
-	this.children = a;
 
 	if (arrowsActive)
 		this.showArrows();
@@ -274,9 +298,9 @@ galSlider.prototype.animate = function(prev, curr, next, transition) {
  * @brief slide to next slide
  */
 galSlider.prototype.next = function() {
-	var current = this.children[Math.abs(this.iteration%this.children.length)];
-	var previous = this.children[Math.abs((this.iteration+this.children.length-1)%this.children.length)];
-	var next = this.children[Math.abs((this.iteration+1)%this.children.length)];
+	var current = this.children[this.getIndex()];
+	var previous = this.children[this.getIndex(-1)];
+	var next = this.children[this.getIndex(1)];
 	this.animate(previous, current, next, this.transition);
 	this.iteration++;
 };
@@ -285,41 +309,43 @@ galSlider.prototype.next = function() {
  * @brief slide to previous slide
  */
 galSlider.prototype.previous = function() {
-	var current = this.children[Math.abs(this.iteration%this.children.length)];
-	var previous = this.children[Math.abs((this.iteration+1)%this.children.length)];
-	var next = this.children[Math.abs((this.iteration+this.children.length-1)%this.children.length)];
+	var new_index = this.getIndex(-1);
+	var current = this.children[this.getIndex()];
+	var previous = this.children[this.getIndex(1)];
+	var next = this.children[new_index];
 	this.animate(previous, current, next, this.reverseTransition(this.transition));
-	this.iteration += this.children.length-1;
+	this.iteration = new_index;
 };
 
 /**
  * @brief Get the current slide index
- * @return current slide index
+ * 
+ * @param  d if defined it's the current index + d (converted to valid index)
+ * @return   current slide index
  */
-galSlider.prototype.getIndex = function() {
-	return this.iteration % this.children.length;
+galSlider.prototype.getIndex = function(d) {
+	if (d == undefined)
+		d = 0;
+	var i = (this.iteration + d) % this.children.length;
+	while (i < 0)
+		i += this.children.length;
+	return i;
 };
 
 /**
  * @brief Go to slide with index b
  * @param  b index of slide to go to
  */
-galSlider.prototype.gotTo = function(b) {
-	if (typeof b !== 'number') {
-		throw new TypeError("(galSlider) Not a number.");
-	}
-	if (b < 0 || b >= this.children.length) {
-		throw new RangeError("(galSlider) Invalid slide index \""+b+"\". Expected number between "+0+" and "+(this.children.length-1)+".");
-	}
-	if (this.autoplay) {
-		this.start();
-	}
-	if (this.iteration%this.children.length != b) {
+galSlider.prototype.goTo = function(b) {
+	if (galSliderTools.checkIfNumber(b) && galSliderTools.checkIfInRange(b, 0, this.children.length)) {
+		if (this.autoplay) {
+			this.start();
+		}
 		next = this.children[b];
-		curr = this.children[this.iteration%this.children.length];
-		prev = this.children[(this.iteration+this.children.length-1)%this.children.length]
+		curr = this.children[this.getIndex()];
+		prev = this.children[this.getIndex(-1)];
 		this.animate(prev, curr, next, this.transition);
-		this.iteration += this.children.length-(this.iteration%this.children.length)+b;
+		this.iteration = b;
 	}
 };
 
@@ -329,20 +355,8 @@ galSlider.prototype.gotTo = function(b) {
  * @param b name of transition
  */
 galSlider.prototype.setTransition = function (b) {
-	if (this.transition_values.indexOf(b) > -1)
+	if (galSliderTools.checkIfValidTransition(b, this))
 		this.transition = b;
-	else {
-		s = "";
-		var first = true;
-		for (var i = 0; i < this.transition_values.length; i++) {
-			if (first)
-				first = false;
-			else
-				s += ", ";
-			s += "\""+this.transition_values[i]+"\"";
-		}
-		throw new Error("(galSlider) Invalid transition value \""+b+"\". Expected ["+s+"].");
-	}
 };
 
 /**
@@ -351,12 +365,11 @@ galSlider.prototype.setTransition = function (b) {
  * @param b time in miliseconds
  */
 galSlider.prototype.setInterval = function (b) {
-	if (typeof b !== "number" || typeof b === "string") {
-		throw new TypeError("(galSlider) Not a number");
-	}
-	this.time_interval = b;
-	if (this.autoplay) {
-		this.start();
+	if (galSliderTools.checkIfNumber(b)) {
+		this.time_interval = b;
+		if (this.autoplay) {
+			this.start();
+		}
 	}
 };
 
@@ -383,9 +396,75 @@ galSlider.prototype.stop = function() {
 	this.autoplay = false;
 };
 
+/**
+ * @brief insert new slide at the end
+ */
+galSlider.prototype.append = function(e) {
+	if (galSliderTools.checkIfHTMLElement(e)) {
+		if (this.children.length == 0) {
+			e.style.opacity = "1";
+			e.style.zIndex = "1";
+		}
+		else {
+			e.style.opacity = "0";
+			e.style.zIndex = "0";
+		}
+		e.classList.add("galSlider-content");
+		e.style.top = "0px";
+		e.style.left = "0px";
+		e.classList.add("transition");
+		if (e.parentElement != this.self)
+			this.self.appendChild(e);
+		this.children.push(e);
+	}
+};
+
+/**
+ * @brief insert new slide at position indicated
+ */
+galSlider.prototype.insertAt = function(e, i) {
+	if (galSliderTools.checkIfNumber(i) &&
+		galSliderTools.checkIfInRange(i, 0, this.children.length) &&
+		galSliderTools.checkIfHTMLElement(e)) {
+		if (this.children.length == 0) {
+			e.style.opacity = "1";
+			e.style.zIndex = "1";
+		}
+		else {
+			e.style.opacity = "0";
+			e.style.zIndex = "0";
+		}
+		e.classList.add("galSlider-content");
+		e.style.top = "0px";
+		e.style.left = "0px";
+		e.classList.add("transition");
+		if (e.parentElement != this.self)
+			this.self.appendChild(e);
+		this.children.splice(i, 0, e);
+	}
+};
+
+/**
+ * @brief remove slide with index i
+ *
+ *  @param i index of slide to remove
+ *  @return  HTML element being removed
+ */
+galSlider.prototype.remove = function(i) {
+	if (galSliderTools.checkIfNumber(i) &&
+		galSliderTools.checkIfInRange(i, 0, this.children.length)) {
+		var ret = this.children[i];
+		if (i == this.getIndex())
+			this.next();
+		this.children.splice(i, 1);
+		this.self.removeChild(ret);
+		return ret;
+	}
+};
+
 if (window.jQuery && galSliderTools.checkjQueryVersion(jQuery.fn.jquery)) {
 	(function(jQuery) {
-		jQuery.fn.galSlider = function(a,b) {
+		jQuery.fn.galSlider = function(a,b,c) {
 			jQuery.each(jQuery(this), function (slider_index, elem) {
 				var s = elem.galSlider;
 				if (a == "start") {
@@ -423,6 +502,15 @@ if (window.jQuery && galSliderTools.checkjQueryVersion(jQuery.fn.jquery)) {
 				}
 				else if (a == "timeInterval") {
 					s.setInterval(b);
+				}
+				else if (a == "append") {
+					s.append(b);
+				}
+				else if (a == "insertAt") {
+					s.insertAt(b, c);
+				}
+				else if (a == "remove") {
+					s.remove(b);
 				}
 				else if (a == undefined) {
 					new galSlider(elem);
