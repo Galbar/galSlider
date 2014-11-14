@@ -100,7 +100,16 @@ Set the transition animation to t.
 All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "slide-right", "random".
 
 ### .setInterval(t)
-Set the time each slide is visible to t miliseconds
+Set the time each slide is visible to t miliseconds.
+
+### .append(e)
+Insert HTML element e as new slide at the end.
+
+### .insertAt(e, i)
+Insert HTML element e as new slide at index i.
+
+### .remove(i)
+Remove slide at index i and return its HTML element.
 
 ### .destroy()
 Destroys the slider.
@@ -155,6 +164,15 @@ All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "sli
 
 ### .galSlider("timeInterval", value)
 Set time between slides to value miliseconds.
+
+### .galSlider("append", e)
+Insert HTML element e as new slide at the end.
+
+### .galSlider("insertAt", e, i)
+Insert HTML element e as new slide at index i.
+
+### .galSlider("remove", i)
+Remove slide at index i and return its HTML element.
 
 ### .galSlider("destroy")
 Destroys the slider.
