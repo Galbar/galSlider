@@ -7,7 +7,6 @@
     <meta name="description" content="galSlider : A simple but powerful slider for web pages. It supports any content you may want to put into it.">
 
     <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
-    <link rel="stylesheet" type="text/css" media="screen" href="galSlider/style.css">
 
     <title>galSlider</title>
   </head>
@@ -33,13 +32,8 @@
     <div id="main_content_wrap" class="outer">
       <section id="main_content" class="inner">
         <h1>
-<a name="galslider" class="anchor" href="#galslider"><span class="octicon octicon-link"></span></a>galSlider</h1>
+<a id="galslider" class="anchor" href="#galslider" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider</h1>
 
-  <div id="mySlider" class="galSlider galSlider-rounded" galSlider-width="400" galSlider-height="156" galSlider-time-interval="4000" galSlider-transition="random" galSlider-lock-onhover="true" galSlider-show-arrows="true" style="background-color:black; margin-left:120px">
-    <img class="galSlider-content" src="images/demo_img1.jpg">
-    <img class="galSlider-content" src="images/demo_img2.jpg">
-    <img class="galSlider-content" src="images/demo_img3.jpg">
-  </div>
 <h2>
 <a id="adding-it-to-your-web-page" class="anchor" href="#adding-it-to-your-web-page" aria-hidden="true"><span class="octicon octicon-link"></span></a>Adding it to your web page</h2>
 
@@ -179,7 +173,22 @@ All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "sli
 <h3>
 <a id="setintervalt" class="anchor" href="#setintervalt" aria-hidden="true"><span class="octicon octicon-link"></span></a>.setInterval(t)</h3>
 
-<p>Set the time each slide is visible to t miliseconds</p>
+<p>Set the time each slide is visible to t miliseconds.</p>
+
+<h3>
+<a id="appende" class="anchor" href="#appende" aria-hidden="true"><span class="octicon octicon-link"></span></a>.append(e)</h3>
+
+<p>Insert HTML element e as new slide at the end.</p>
+
+<h3>
+<a id="insertate-i" class="anchor" href="#insertate-i" aria-hidden="true"><span class="octicon octicon-link"></span></a>.insertAt(e, i)</h3>
+
+<p>Insert HTML element e as new slide at index i.</p>
+
+<h3>
+<a id="removei" class="anchor" href="#removei" aria-hidden="true"><span class="octicon octicon-link"></span></a>.remove(i)</h3>
+
+<p>Remove slide at index i and return its HTML element.</p>
 
 <h3>
 <a id="destroy" class="anchor" href="#destroy" aria-hidden="true"><span class="octicon octicon-link"></span></a>.destroy()</h3>
@@ -263,6 +272,21 @@ All the posible values are: "fade", "slide-up", "slide-down", "slide-left", "sli
 <p>Set time between slides to value miliseconds.</p>
 
 <h3>
+<a id="galsliderappend-e" class="anchor" href="#galsliderappend-e" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("append", e)</h3>
+
+<p>Insert HTML element e as new slide at the end.</p>
+
+<h3>
+<a id="galsliderinsertat-e-i" class="anchor" href="#galsliderinsertat-e-i" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("insertAt", e, i)</h3>
+
+<p>Insert HTML element e as new slide at index i.</p>
+
+<h3>
+<a id="galsliderremove-i" class="anchor" href="#galsliderremove-i" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("remove", i)</h3>
+
+<p>Remove slide at index i and return its HTML element.</p>
+
+<h3>
 <a id="galsliderdestroy" class="anchor" href="#galsliderdestroy" aria-hidden="true"><span class="octicon octicon-link"></span></a>.galSlider("destroy")</h3>
 
 <p>Destroys the slider.</p>
@@ -292,7 +316,7 @@ $("#mySlider").galSlider("stop").galSlider("addArrows");
       </footer>
     </div>
 
-<script type="text/javascript" src="galSlider/main.js"></script>
+    
 
   </body>
 </html>
