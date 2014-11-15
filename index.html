@@ -127,10 +127,17 @@ If "false", arrows won't be shown.</p>
 <p>When a new galSlider object is created from an HTML node e, it is stored into e.galSlider and you can access it from there:</p>
 
 <pre><code>var e = document.getElementById('mySlider');
-new galSlider(e); // Create a new galSlider from e
+galSlider.create(e); // Create a new galSlider from e
 e.galSlider;
 &gt; Object { self: &lt;div#mySlider.galSlider.galSl...timeout: 5, autoplay: true }
 </code></pre>
+
+<h3>
+<a id="user-content-galslidercreatee" class="anchor" href="#galslidercreatee" aria-hidden="true"><span class="octicon octicon-link"></span></a>galSlider.create(e)</h3>
+
+<p>Create a new galSlider from HTML element, stores it in e.galSlider and returns the galSlider instance.</p>
+
+<p>The following methods belong to the instance e.galSlider:</p>
 
 <h3>
 <a id="start" class="anchor" href="#start" aria-hidden="true"><span class="octicon octicon-link"></span></a>.start()</h3>
@@ -217,7 +224,7 @@ e.galSlider.showArrows(); // Adds the arrows to the slider
 <h2>
 <a id="jquery-api-documentation-optional" class="anchor" href="#jquery-api-documentation-optional" aria-hidden="true"><span class="octicon octicon-link"></span></a>jQuery API Documentation (optional)</h2>
 
-<p>Requires jQuery 1.10.2 or later. (<a href="http://www.jquery.com">http://www.jquery.com</a>)<br>
+<p>Requires jQuery 1.0.0 or later. (<a href="http://www.jquery.com">http://www.jquery.com</a>)<br>
 If you are using jQuery you can interact with the slider using the jQuery API:</p>
 
 <pre><code>$('.mySlider').galSlider(); // Create a new galSlider for each element with class 'mySlider'
