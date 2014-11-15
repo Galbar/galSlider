@@ -66,10 +66,15 @@ JavaScript API Documentation
 When a new galSlider object is created from an HTML node e, it is stored into e.galSlider and you can access it from there:
 ```
 var e = document.getElementById('mySlider');
-new galSlider(e); // Create a new galSlider from e
+galSlider.create(e); // Create a new galSlider from e
 e.galSlider;
 > Object { self: <div#mySlider.galSlider.galSl...timeout: 5, autoplay: true }
 ```
+
+### galSlider.create(e)
+Create a new galSlider from HTML element, stores it in e.galSlider and returns the galSlider instance.
+
+The following methods belong to the instance e.galSlider:
 
 ### .start()
 Make the galSlider slide automatically.
@@ -118,7 +123,7 @@ Destroys the slider.
 Using the slider from the first example.
 ```
 var e = document.getElementById('mySlider');
-new galSlider(e);         // Create a new galSlider from e
+galSlider.create(e);      // Create a new galSlider from e
 e.galSlider.stop();       // Stops the slider animation
 e.galSlider.showArrows(); // Adds the arrows to the slider
 ```
