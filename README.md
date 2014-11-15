@@ -130,7 +130,7 @@ e.galSlider.showArrows(); // Adds the arrows to the slider
 
 jQuery API Documentation (optional)
 -----------------------------------
-Requires jQuery 1.10.2 or later. (http://www.jquery.com)  
+Requires jQuery 1.0.0 or later. (http://www.jquery.com)  
 If you are using jQuery you can interact with the slider using the jQuery API:
 ```
 $('.mySlider').galSlider(); // Create a new galSlider for each element with class 'mySlider'
