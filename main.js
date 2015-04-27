@@ -48,8 +48,9 @@ function galSlider(elem) {
 	if (this.self.getAttribute("galSlider-autoplay") !== undefined)
 		this.autoplay = (this.self.getAttribute("galSlider-autoplay") == "true");
 
+	var arrowsActive = false;
 	if (this.self.getAttribute("galSlider-show-arrows") !== undefined)
-		var arrowsActive = (this.self.getAttribute("galSlider-show-arrows") == "true");
+		arrowsActive = (this.self.getAttribute("galSlider-show-arrows") == "true");
 
 	var b = this.self.getElementsByClassName("galSlider-content");
 	for (var i = 0; i < b.length; i++) {
